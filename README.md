@@ -250,6 +250,99 @@ module.exports = router;
 
 ```
 
+conventions
+
+```js
+// always return data object
+router.get("/:id", async (req, res) => {
+  try {
+    const data = await MissionObject.findOne({ _id: req.params.id });
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+```
+
+```js
+// our post search
+
+// bad
+// controller : user
+router.get("/:id/devices", async (req, res) => {
+  try {
+    const data = await DeviceModel.find({ userId: req.params.id });
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+
+// good
+// controller : device
+router.post("/search", async (req, res) => {
+  try {
+    const query = {};
+    if (req.body.hasOwnProperty(req.body.userId))
+      query.userId = req.body.userId;
+    const data = await DeviceModel.find(query);
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+
+// bad
+const language = window.localStorage.getItem("i18nextLng");
+await api.post("/api/users/language", { language });
+
+// good
+const language = window.localStorage.getItem("i18nextLng");
+await api.put("/api/users/${id}", { language });
+
+// security injections
+// bad
+router.put(
+  "/:id",
+  passport.authenticate(["admin", "user"], { session: false }),
+  async (req, res) => {
+    try {
+      const data = await Company.findOneAndUpdate(
+        { _id: req.params.id },
+        req.body
+      );
+      return res.status(200).send({ ok: true, data });
+    } catch (error) {
+      capture(error);
+      res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+    }
+  }
+);
+
+// good
+router.get(
+  "/:id",
+  passport.authenticate(["user"], { session: false }),
+  async (req, res) => {
+    try {
+      const query = {};
+
+      query.organisationId = req.user.organisationId;
+      query._id = req.params.id;
+
+      const data = await MissionObject.findOne(query);
+      return res.status(200).send({ ok: true, data });
+    } catch (error) {
+      capture(error);
+      res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+    }
+  }
+);
+```
+
 ## 3. Front-end
 
 ```js
@@ -298,4 +391,25 @@ const { data } = await api.get(`/company/${match.params.id}`)
     setCompany(data)
     setValues(data)
 }
+
+// don't abstract all the CRUD operations
+
+// bad
+
+const getActions = () => API.get({ path: '/action' })
+
+// do something in the flow
+// while in the flow...
+const actions = await getActions()
+setActions(actions.data)
+// ... keep the flow going on
+
+// good
+
+// do something in the flow
+// while in the flow...
+const response = await API.get({ path: '/action' })
+if (!response.ok) response alert(response.error);
+setActions(response.data)
+// ... keep the flow going on
 ```
