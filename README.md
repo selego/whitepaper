@@ -19,30 +19,23 @@ This guide covers repository structure, branching strategy, commit messages, pul
 
 ## Table of Contents
 
-<!-- - [1. Javascript](#1.-Javascript)
-- [2. Back-end](#2.-Back-end)
-- [3. Front-end](#3.-Front-end)
-- [4. DevOps](#4.-DevOps)
-- [5. NoCode](#5.-NoCode)
-- [6. Project](#6.-Project) -->
-
-  - [1. Javascript](#1-javascript)
-  - [2. Back-end](#2-back-end)
-    - [2.1. Add a file controller](#21-add-a-file-controller)
-  - [3. Front-end](#3-front-end)
+- [1. Javascript](#1-javascript)
+- [2. Back-end](#2-back-end)
+  - [2.1. Add a File Controller](#21-add-a-file-controller)
+- [3. Front-end](#3-front-end)
+- [4. DevOps](#4-devops)
+- [5. NoCode](#5-nocode)
+- [6. Project](#6-project)
+  - [6.1. Architecture](#61-architecture)
 
 ## 1. Javascript
 
 ```js
+// Your Javascript code goes here
 
 ```
 
 ## 2. Back-end
-
-### 2.1. Add a file controller
-
-bad<br>
-handle file upload in every controller
 
 ```js
 
