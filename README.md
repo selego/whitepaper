@@ -239,4 +239,56 @@ function validateContact(contact) {
 }
 ```
 
+### How to Upload Files
+
+Integrating the same file handler improves our efficiency. Please use the approach below
+
+#### Backend Counterpart
+
+To streamline the process of uploading files such as photos, audio, video, or documents to our database, we typically use S3 buckets from CleverCloud. Instead of duplicating the same code across multiple repositories, we introduced a dedicated file handler. Here's an example of the improved approach:
+
+```js
+const express = require("express");
+const router = express.Router();
+const crypto = require("crypto");
+const { uploadToS3FromBuffer } = require("../utils");
+
+router.post("/", async (req, res) => {
+  const { files, folder } = req.body;
+
+  if (!folder) return res.status(400).send({ ok: false, message: "No folder specified" });
+  if (!files) return res.status(400).send({ ok: false, message: "No files uploaded" });
+
+  const filesArray = Array.isArray(files) ? files : [files];
+
+  const uploadPromises = filesArray.map((file) => {
+    const base64ContentArray = file.rawBody.split(",");
+    const contentType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
+    const extension = file.name.split(".").pop();
+    const buffer = Buffer.from(base64ContentArray[1], "base64");
+    const uuid = crypto.randomBytes(16).toString("hex");
+    return uploadToS3FromBuffer(`file${folder}/${uuid}/${file.name}.${extension}`, buffer, contentType);
+  });
+
+  try {
+    const urls = await Promise.all(uploadPromises);
+    return res.status(200).send({ ok: true, data: urls });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).send({ ok: false, message: "Error in file upload" });
+  }
+});
+
+module.exports = router;
+```
+
+With this file handler, you only need to copy-paste it into your controllers and adjust the necessary S3 keys for each new project. This handler processes the file upload and returns the URL(s), which you can then add to your model along with other data during create or update operations.
+
+#### Frontend Counterpart
+
+The duplication reduction extends to the frontend as well. By using a reusable file input component, you can streamline file uploads across different projects. Here's an example from our global components:
+
+[File Input Component](https://github.com/selego/matteriality/blob/main/app/src/components/file-input.jsx){:target="_blank"}
+
+You can copy-paste this component into your project and adjust the styling to match your needs. This way, the file upload process is standardized and simplified, improving overall efficiency.
 
