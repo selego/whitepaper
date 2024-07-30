@@ -147,3 +147,45 @@ project-root
 └── (other project-related files and configurations)
 
 
+
+
+### Usage of Joi in Early Phases
+
+Using Joi in the early phases of a project, where frequent changes are common, is not optimal due to the added complexity and increased development time it introduces. The structured nature of Joi's validation hinders rapid iterations based on evolving requirements.
+
+**Considerations:**
+- Should it be used in the very early stages? Probably not, due to rapid changes.
+- Does it slow down development in the early phases? Yes, it can.
+- Is it necessary in a more mature phase of the project? Absolutely.
+
+It unfortunately makes the code look too messy at the moment and reduces code readability. 
+Here is an example of how using Joi can make the code complex and difficult to read. We changed the attributes of the model a few times and the checks were slowing us down. 
+
+```js
+function validateContact(contact) {
+  return Joi.object({
+    type: Joi.string().valid("INDIVIDUAL", "ASSOCIATION", "COMPANY").required(),
+    firstname: Joi.string().allow(null, ""),
+    lastname: Joi.string().allow(null, ""),
+    email: Joi.string().allow(null, ""),
+    phone: Joi.string().allow(null, ""),
+    city: Joi.string().allow(null, ""),
+    invitationStatus: Joi.string().valid("SENT", "NONE", "ERROR").required(),
+    prioritized: Joi.boolean().required(),
+    allow_information: Joi.boolean().allow(null, ""),
+    adhesion: Joi.boolean().allow(null, ""),
+    invitation_send_at: Joi.date().allow(null, ""),
+    org_name: Joi.string().allow(null, ""),
+    activity: Joi.string().allow(null, ""),
+    nb_employee: Joi.number().allow(null, ""),
+    tag_ids: Joi.array().items(Joi.string().uuid()).allow(null, ""),
+    status: Joi.string()
+      .valid("NEW", "FOLLOW_UP", "CONTACTED", "PLANNED", "MET", "CLOSED_WIN", "CLOSED_LOST")
+      .required(),
+    appointment_date: Joi.date().allow(null, ""),
+    operator_id: Joi.string().allow(null, ""), // only for SUPER_ADMIN
+  }).validate(contact, { stripUnknown: true });
+}
+```
+
+
