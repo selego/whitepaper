@@ -155,6 +155,48 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 
 ## 3. Front-end
 
+
+### Conventions on Calling API
+
+#### Don't Do This:
+
+```javascript
+useEffect(() => {
+  try {
+    api.post("/event/search").then(({ data, ok }) => {
+      if (!ok) return toast.error(data.message);
+      setEvents(data);
+      setTotal(data.total);
+      setLoading(false);
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}, []);
+```
+#### Do this
+
+```javascript
+const fetchEvents = async () => {
+  try {
+    const { data, ok, total } = await api.post("/event/search");
+    if (!ok) return toast.error(data.message);
+    setEvents(data);
+    setTotal(total);
+  } catch (e) {
+    console.error(e);
+  } finally {
+    setLoading(false);
+  }
+};
+
+useEffect(() => {
+  fetchEvents();
+}, []);
+```
+
+
+
 ### Separate Concerns
 
 When fetching data, it's crucial to maintain a clear separation of concerns. If you’re fetching an `annonce`, focus solely on fetching the `annonce`. Fetching additional data, such as a company, at the same time complicates the controller and the call itself. This approach introduces inconsistency in the data object returned from the controller.
