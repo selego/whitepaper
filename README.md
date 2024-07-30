@@ -146,7 +146,7 @@ project-root
 │
 └── (other project-related files and configurations)
 
-
+```
 
 
 ### Usage of Joi in Early Phases
