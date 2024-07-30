@@ -62,3 +62,46 @@ This guide covers repository structure, branching strategy, commit messages, pul
 ```js
 
 ```
+
+## 6. Project
+
+<!-- 
+
+project-root
+│
+├── api
+│   └── (api-related files and configurations)
+│
+├── app
+│   ├── src
+│   │   ├── components
+│   │   │   └── (global components)
+│   │   │
+│   │   ├── scenes
+│   │   │   ├── auth
+│   │   │   │   └── (auth-related components and files)
+│   │   │   │
+│   │   │   └── home
+│   │   │       ├── components
+│   │   │       │   └── (home-related components)
+│   │   │       │
+│   │   │       └── index.js
+│   │   │
+│   │   │
+│   │   ├── services
+│   │   │   └── (service-related files)
+│   │   │
+│   │   └── utils
+│   │       └── (utility files)
+│   │
+│   └── (other non-source files and configurations)
+│
+└── (other project-related files and configurations)
+
+
+-->
+
+
+
+
+
