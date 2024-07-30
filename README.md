@@ -62,15 +62,14 @@ This guide covers repository structure, branching strategy, commit messages, pul
 ```js
 
 ```
-
 ## 6. Project
-
 
 ### 6.1. Architecture
 
 We try to keep the same project architecture because:
 - It is much easier to jump from one project to another within the company.
 
+```plaintext
 project-root
 │
 ├── api
@@ -100,4 +99,5 @@ project-root
 │   └── (other non-source files and configurations)
 │
 └── (other project-related files and configurations)
+
 
