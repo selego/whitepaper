@@ -201,7 +201,7 @@ useEffect(() => {
 
 
 
-### 3.2. Separate Concerns
+### 3.2. Separating Concerns
 
 When fetching data, it's crucial to maintain a clear separation of concerns. If you’re fetching an `annonce`, focus solely on fetching the `annonce`. Fetching additional data, such as a company, at the same time complicates the controller and the call itself. This approach introduces inconsistency in the data object returned from the controller.
 
