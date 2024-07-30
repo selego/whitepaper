@@ -155,6 +155,78 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 
 ## 3. Front-end
 
+### Separate Concerns
+
+When fetching data, it's crucial to maintain a clear separation of concerns. If you’re fetching an `annonce`, focus solely on fetching the `annonce`. Fetching additional data, such as a company, at the same time complicates the controller and the call itself. This approach introduces inconsistency in the data object returned from the controller.
+
+Here’s an example of how this problem manifests:
+
+```js
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await api.get(`/annonce/${annonceId}`);
+      if (res.ok) {
+        setAnnonce(res.data.annonce);
+        setCompany(res.data.company);
+      } else {
+        toast.error("Une erreur est survenue");
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+  fetchData();
+}, [annonceId]);
+```
+
+#### Issues with the Above Approach
+
+1. **Complex Controller Logic:** Fetching both `annonce` and `company` in the same call increases the complexity of the controller.
+2. **Inconsistent Data Object:** The returned data object from the controller may contain inconsistent structures.
+3. **Lack of Early Return:** The absence of early return statements reduces code readability.
+4. **No Destructuring:** Not using `{ data, ok }` destructuring leads to less clean and more error-prone code.
+
+#### Improved Approach
+
+Separate the fetching logic to maintain clarity and consistency, with functions defined outside of `useEffect`:
+
+```js
+const fetchAnnonce = async (annonceId) => {
+  try {
+    const { ok, data } = await api.get(`/annonce/${annonceId}`);
+    if (!ok) return toast.error("Une erreur est survenue");
+    setAnnonce(data.annonce);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+const fetchCompany = async (companyId) => {
+  try {
+    const { ok, data } = await api.get(`/company/${companyId}`);
+    if (!ok) return toast.error("Une erreur est survenue");
+    setCompany(data.company);
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+useEffect(() => {
+  fetchAnnonce(annonceId);
+  fetchCompany(companyId);
+}, [annonceId, companyId]);
+```
+
+### Benefits of the Improved Approach
+
+1. **Clear Separation of Concerns:** Each function is responsible for fetching a specific piece of data.
+2. **Simplified Controller Logic:** The controller remains simple and focused.
+3. **Consistent Data Handling:** Each data object is handled independently, maintaining consistency.
+4. **Early Returns and Destructuring:** Using early returns and destructuring improves code readability and reduces potential errors.
+
+
+
 ```js
 
 ```
