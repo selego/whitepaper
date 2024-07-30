@@ -65,7 +65,11 @@ This guide covers repository structure, branching strategy, commit messages, pul
 
 ## 6. Project
 
-<!-- 
+
+### 6.1. Architecture
+
+We try to keep the same project architecture because:
+- It is much easier to jump from one project to another within the company.
 
 project-root
 │
@@ -98,8 +102,6 @@ project-root
 │
 └── (other project-related files and configurations)
 
-
--->
 
 
 
