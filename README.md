@@ -1,24 +1,5 @@
 # Selego Style Guide
 
-## Table of Contents
-1. [Introduction](#introduction)
-  - [Purpose](#purpose)
-  - [Why It's Important to Converge to the Same Tech](#why-its-important-to-converge-to-the-same-tech)
-  - [Audience](#audience)
-  - [Scope](#scope)
-2. [Javascript](#javascript)
-  - [Code Readiness](#code-readiness)
-3. [Back-end](#back-end)
-  - [The Post Search](#the-post-search)
-  - [Respect 1 Post Route, 1 Object Created](#respect-1-post-route-1-object-created)
-  - [Consistency in Route Naming](#consistency-in-route-naming)
-4. [Front-end](#front-end)
-  - [Conventions on Calling API](#conventions-on-calling-api)
-  - [Separating Concerns](#separating-concerns)
-5. [DevOps](#devops)
-6. [NoCode](#nocode)
-7. [Project](#project)
-  - [Architecture](#architecture)
 
 ## Introduction
 This guide provides standards and best practices for developing projects at Selego, ensuring consistency, readability, and maintainability of our code.
@@ -36,6 +17,23 @@ All Selego developers working on 0 to 1 projects or scale-ups.
 
 ### Scope
 This guide covers repository structure, branching strategy, commit messages, pull requests, code reviews, coding standards, issue tracking, documentation, automation, security, and best practices, specifically tailored for MERN stack, React Native. 
+
+## Table of Contents
+
+1. [Javascript](#1-javascript)
+  - [Code Readiness](#11-code-readiness)
+2. [Back-end](#2-back-end)
+  - [The Post Search](#21-the-post-search)
+  - [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
+  - [Consistency in Route Naming](#23-consistency-in-route-naming)
+3. [Front-end](#3-front-end)
+  - [Conventions on Calling API](#31-conventions-on-calling-api)
+  - [Separating Concerns](#32-separating-concerns)
+4. [DevOps](#4-devops)
+5. [NoCode](#5-nocode)
+6. [Project](#6-project)
+  - [Architecture](#61-architecture)
+
 
 ## 1. Javascript
 
