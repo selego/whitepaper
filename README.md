@@ -108,8 +108,38 @@ Adhering to the principle of "1 POST route, 1 object created" helps mitigate the
 In conclusion, respecting the principle of "1 POST route, 1 object created" is essential for maintaining a clean, modular, and maintainable codebase. It helps in keeping the API design straightforward and the controller logic simple, ultimately leading to better software development practices.
 
 
-```js
 
+### Consistency in Route Naming
+
+Maintaining consistency in route naming conventions is essential for improving code readability and maintainability. One approach to achieving this is by avoiding the duplication of controller names within routes and using generic identifiers like `:id` instead. For example, instead of using both `dataRoomId` and `data_room_id`, simply using `:id` can reduce confusion and make the code easier to work with. This method not only simplifies the route definitions but also facilitates copying and pasting, as the placeholder is generic and applicable across different contexts.
+
+#### How Not to Do It
+
+Using specific names for different routes can lead to inconsistency and confusion.
+
+```js
+router.get("/dataRoom/:dataRoomId", passport.authenticate(["user"], { session: false }), async (req, res) => {
+  try {
+    const { dataRoomId } = req.params;
+    // logic to handle dataRoom
+  } catch (error) {
+    res.status(500).send({ ok: false, error });
+  }
+});
+```
+#### How to Do it
+
+Using a generic :id makes the routes cleaner and more maintainable.
+
+```js
+router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }), async (req, res) => {
+  try {
+    const { id } = req.params;
+    // logic to handle dataRoom
+  } catch (error) {
+    res.status(500).send({ ok: false, error });
+  }
+});
 
 ```
 
