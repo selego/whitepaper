@@ -90,7 +90,7 @@ By using a POST request, we can send a complex object in the body of the request
 
 
 
-### Respect 1 Post Route, 1 Object Created
+### 2.2. Respect 1 Post Route, 1 Object Created
 
 In RESTful API design, adhering to the principle of "1 POST route, 1 object created" is crucial for maintaining clear separation of concerns and simplifying the API's behavior. This approach ensures that each endpoint has a single responsibility, making the API more predictable and easier to maintain.
 
@@ -112,7 +112,7 @@ In conclusion, respecting the principle of "1 POST route, 1 object created" is e
 
 
 
-### Consistency in Route Naming
+### 2.3. Consistency in Route Naming
 
 Maintaining consistency in route naming conventions is essential for improving code readability and maintainability. One approach to achieving this is by avoiding the duplication of controller names within routes and using generic identifiers like `:id` instead. For example, instead of using both `dataRoomId` and `data_room_id`, simply using `:id` can reduce confusion and make the code easier to work with. This method not only simplifies the route definitions but also facilitates copying and pasting, as the placeholder is generic and applicable across different contexts.
 
@@ -264,7 +264,7 @@ useEffect(() => {
 }, [annonceId, companyId]);
 ```
 
-### Benefits of the Improved Approach
+#### Benefits of the Improved Approach
 
 1. **Clear Separation of Concerns:** Each function is responsible for fetching a specific piece of data.
 2. **Simplified Controller Logic:** The controller remains simple and focused.
@@ -318,7 +318,7 @@ project-root
 ```
 
 
-### Usage of Joi in Early Phases
+### 6.2. Usage of Joi in Early Phases
 
 Using Joi in the early phases of a project, where frequent changes are common, is not optimal due to the added complexity and increased development time it introduces. The structured nature of Joi's validation hinders rapid iterations based on evolving requirements.
 
