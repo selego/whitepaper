@@ -21,7 +21,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
 
 - [1. Javascript](#1-javascript)
 - [2. Back-end](#2-back-end)
-  - [2.1. Add a File Controller](#21-add-a-file-controller)
+  - [2.1. The Post Search](#21-post-search)
 - [3. Front-end](#3-front-end)
 - [4. DevOps](#4-devops)
 - [5. NoCode](#5-nocode)
@@ -57,8 +57,20 @@ By immediately returning when the condition is not met, the main logic is not in
 
 ## 2. Back-end
 
-```js
+### 2.1. The Post Search
 
+```js
+router.post("/search", async (req, res) => {
+  try {
+   const query = {};
+    if(req.body.hasOwnProperty(req.body.userId)) query.userId = req.body.userId
+    const data = await DeviceModel.find(query);
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
 ```
 
 
