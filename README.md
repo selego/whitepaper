@@ -68,6 +68,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
 
 We try to keep the same project architecture because:
 - It is much easier to jump from one project to another within the company.
+- We try to keep code look like it's written from the same person, even througout projects, same for the way we structure our files.
 
 ```plaintext
 project-root
