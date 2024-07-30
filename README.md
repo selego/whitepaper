@@ -91,7 +91,6 @@ project-root
 │   │   │       │
 │   │   │       └── index.js
 │   │   │
-│   │   │
 │   │   ├── services
 │   │   │   └── (service-related files)
 │   │   │
@@ -101,9 +100,4 @@ project-root
 │   └── (other non-source files and configurations)
 │
 └── (other project-related files and configurations)
-
-
-
-
-
 
