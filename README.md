@@ -288,7 +288,7 @@ With this file handler, you only need to copy-paste it into your controllers and
 
 The duplication reduction extends to the frontend as well. By using a reusable file input component, you can streamline file uploads across different projects. Here's an example from our global components:
 
-[File Input Component](https://github.com/selego/matteriality/blob/main/app/src/components/file-input.jsx){:target="_blank"}
+<a href="https://github.com/selego/matteriality/blob/main/app/src/components/file-input.jsx" target="_blank">File Input Component</a>
 
 You can copy-paste this component into your project and adjust the styling to match your needs. This way, the file upload process is standardized and simplified, improving overall efficiency.
 
