@@ -59,19 +59,29 @@ By immediately returning when the condition is not met, the main logic is not in
 
 ### 2.1. The Post Search
 
+Here is the method we use to fetch lists. In most cases, we need to perform extensive filtering on these lists, and a classical GET request can become really messy due to the querying. Instead, we use a POST request for more flexible querying.
+
 ```js
 router.post("/search", async (req, res) => {
   try {
-   const query = {};
-    if(req.body.hasOwnProperty(req.body.userId)) query.userId = req.body.userId
+    const query = {};
+    if (req.body.user_id) query.user_id = req.body.user_id;
+    if (req.body.device_type) query.device_type = req.body.device_type;
+    if (req.body.status) query.status = req.body.status;
+
     const data = await DeviceModel.find(query);
     return res.status(200).send({ ok: true, data });
+
   } catch (error) {
     capture(error);
     res.status(500).send({ ok: false, code: SERVER_ERROR, error });
   }
 });
 ```
+
+
+By using a POST request, we can send a complex object in the body of the request, which allows us to construct more flexible and powerful queries.
+
 
 
 ```js
