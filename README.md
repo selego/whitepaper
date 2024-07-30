@@ -23,9 +23,10 @@ This guide covers repository structure, branching strategy, commit messages, pul
 2. [Back-end](#2-back-end)
    - [2.1. The Post Search](#21-the-post-search)
 3. [Front-end](#3-front-end)
-4. [DevOps](#4-devops)
-5. [NoCode](#5-nocode)
-6. [Project](#6-project)
+   - [3.1. Conventions on Calling API](#31-convention-1)
+5. [DevOps](#4-devops)
+6. [NoCode](#5-nocode)
+7. [Project](#6-project)
    - [6.1. Architecture](#61-architecture)
 
 ## 1. Javascript
@@ -156,7 +157,7 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 ## 3. Front-end
 
 
-### Conventions on Calling API
+### 3.1. Conventions on Calling API
 
 #### How not to do it
 
