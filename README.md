@@ -158,7 +158,8 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 
 ### Conventions on Calling API
 
-#### Don't Do This:
+#### How not to do it
+
 
 ```javascript
 useEffect(() => {
@@ -174,7 +175,7 @@ useEffect(() => {
   }
 }, []);
 ```
-#### Do this
+#### How to do it
 
 ```javascript
 const fetchEvents = async () => {
