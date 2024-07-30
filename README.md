@@ -23,7 +23,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
 2. [Back-end](#2-back-end)
    - [2.1. The Post Search](#21-the-post-search)
 3. [Front-end](#3-front-end)
-   - [3.1. Conventions on Calling API](#31-convention-1)
+   - [3.1. Conventions on Calling API](#31-conventions-on-calling-api)
 5. [DevOps](#4-devops)
 6. [NoCode](#5-nocode)
 7. [Project](#6-project)
