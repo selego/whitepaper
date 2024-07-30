@@ -33,6 +33,8 @@ This guide covers repository structure, branching strategy, commit messages, pul
 5. [NoCode](#5-nocode)
 6. [Project](#6-project)
   - [Architecture](#61-architecture)
+  - [Validation?](#62-usage-of-joi-in-early-phases)
+  - [Uploading Files](#63-how-to-upload-files)
 
 
 ## 1. Javascript
