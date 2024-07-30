@@ -30,10 +30,30 @@ This guide covers repository structure, branching strategy, commit messages, pul
 
 ## 1. Javascript
 
-```js
-// Your Javascript code goes here
+### 1.1. Code Readiness
 
+Implementing early returns in your code can significantly enhance readability and maintainability. Instead of nesting logic within conditional blocks, an early return can simplify the structure of your functions by handling edge cases upfront and allowing the core logic to be more linear and easier to follow. Consider the following example:
+
+```js
+const { ok } = await api.put(`/meeting/url/${id}`);
+if (ok) {
+  const cpy = meetings;
+  const index = cpy.findIndex((e) => e._id === id);
+  ...
+}
 ```
+This code can be made more readable by applying an early return:
+
+```js
+const { ok } = await api.put(`/meeting/url/${id}`);
+if (!ok) return;
+const cpy = meetings;
+const index = cpy.findIndex((e) => e._id === id);
+...
+```
+By immediately returning when the condition is not met, the main logic is not indented and the function becomes more straightforward to understand.
+
+
 
 ## 2. Back-end
 
