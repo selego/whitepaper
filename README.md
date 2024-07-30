@@ -37,11 +37,9 @@ const fetchData = async () => {
 // clean! now we don't care if something happens. we're handling errors gracefully.
 const fetchData = async () => {
   const { data, ok } = await api.get("/whateveryouwanttoget");
-  if (ok) {
-    setData(data);
-  } else {
-    setError(new Error("Failed to fetch data"));
-  }
+  if (!ok) console.log("Error bla bla");
+  setData(data);
+  
 };
 
 // Change Amplification
