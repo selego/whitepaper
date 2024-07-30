@@ -26,7 +26,6 @@ This guide covers repository structure, branching strategy, commit messages, pul
 - [5. NoCode](#5.-NoCode)
 - [6. Project](#6.-Project) -->
 
-- [Table of contents](#table-of-contents)
   - [1. Javascript](#1-javascript)
   - [2. Back-end](#2-back-end)
     - [2.1. Add a file controller](#21-add-a-file-controller)
