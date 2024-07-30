@@ -21,20 +21,20 @@ This guide covers repository structure, branching strategy, commit messages, pul
 ## Table of Contents
 
 1. [Javascript](#1-javascript)
-  - [Code Readiness](#11-code-readiness)
+   1. [Code Readiness](#11-code-readiness)
 2. [Back-end](#2-back-end)
-  - [The Post Search](#21-the-post-search)
-  - [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
-  - [Consistency in Route Naming](#23-consistency-in-route-naming)
+   1. [The Post Search](#21-the-post-search)
+   2. [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
+   3. [Consistency in Route Naming](#23-consistency-in-route-naming)
 3. [Front-end](#3-front-end)
-  - [Conventions on Calling API](#31-conventions-on-calling-api)
-  - [Separating Concerns](#32-separating-concerns)
+   1. [Conventions on Calling API](#31-conventions-on-calling-api)
+   2. [Separating Concerns](#32-separating-concerns)
 4. [DevOps](#4-devops)
 5. [NoCode](#5-nocode)
 6. [Project](#6-project)
-  - [Architecture](#61-architecture)
-  - [Validation?](#62-usage-of-joi-in-early-phases)
-  - [Uploading Files](#63-how-to-upload-files)
+   1. [Architecture](#61-architecture)
+   2. [Validation?](#62-usage-of-joi-in-early-phases)
+   3. [Uploading Files](#63-how-to-upload-files)
 
 
 ## 1. Javascript
@@ -363,7 +363,7 @@ function validateContact(contact) {
 }
 ```
 
-### How to Upload Files
+### 6.3. How to Upload Files
 
 Integrating the same file handler improves our efficiency. Please use the approach below
 
