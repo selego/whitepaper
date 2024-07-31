@@ -104,17 +104,12 @@ For example, consider a scenario where a single POST request is used to create m
 
 [View the code](https://github.com/selego/linkera/blob/main/api/src/controllers/annonce.js)
 
-In this code, the POST request is responsible for creating multiple objects within a single route. This approach can lead to several issues:
-- **Increased Complexity:** Handling multiple objects in a single route increases the complexity of the controller, making it harder to read, test, and maintain.
-- **Tightly Coupled Logic:** The creation logic for different objects becomes tightly coupled, which can make future changes or debugging more difficult.
-- **Separation of Concerns:** By combining multiple responsibilities into a single route, the separation of concerns principle is violated, leading to a less modular and more error-prone codebase.
-
 Adhering to the principle of "1 POST route, 1 object created" helps mitigate these issues by ensuring each route is responsible for a single task. This results in:
 - **Simpler and Cleaner Code:** Each controller method remains focused on a single responsibility, making the code easier to read and maintain.
 - **Improved Debugging:** With each route handling only one type of object, debugging becomes more straightforward.
 - **Better Modularity:** Decoupled logic allows for easier modifications and enhancements in the future without affecting other parts of the code.
 
-In conclusion, respecting the principle of "1 POST route, 1 object created" is essential for maintaining a clean, modular, and maintainable codebase. It helps in keeping the API design straightforward and the controller logic simple, ultimately leading to better software development practices.
+Respecting the principle of "1 POST route, 1 object created" is essential for maintaining a clean, modular, and maintainable codebase. It helps in keeping the API design straightforward and the controller logic simple, ultimately leading to better software development practices.
 
 
 
