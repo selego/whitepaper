@@ -98,9 +98,9 @@ By using a POST request, we can send a complex object in the body of the request
 
 ### 2.2. Respect 1 Post Route, 1 Object Created
 
-In RESTful API design, adhering to the principle of "1 POST route, 1 object created" is crucial for maintaining clear separation of concerns and simplifying the API's behavior. This approach ensures that each endpoint has a single responsibility, making the API more predictable and easier to maintain.
+This helps us separating concerns and simplifying the API's behavior. This approach ensures that each endpoint has a single responsibility, making the API more predictable, easier to copy and easier to maintain.
 
-For example, consider a scenario where a single POST request is used to create multiple objects such as an announcement, a company, and more. This can quickly lead to a bloated and complex endpoint, as seen in the following code snippet from a GitHub repository:
+Checkout this example where a single POST request is used to create multiple objects such as an announcement, a company, and more. This can quickly lead to a bloated and complex endpoint, as seen in the following code snippet from a GitHub repository:
 
 [View the code](https://github.com/selego/linkera/blob/main/api/src/controllers/annonce.js)
 
@@ -108,9 +108,6 @@ Adhering to the principle of "1 POST route, 1 object created" helps mitigate the
 - **Simpler and Cleaner Code:** Each controller method remains focused on a single responsibility, making the code easier to read and maintain.
 - **Improved Debugging:** With each route handling only one type of object, debugging becomes more straightforward.
 - **Better Modularity:** Decoupled logic allows for easier modifications and enhancements in the future without affecting other parts of the code.
-
-Respecting the principle of "1 POST route, 1 object created" is essential for maintaining a clean, modular, and maintainable codebase. It helps in keeping the API design straightforward and the controller logic simple, ultimately leading to better software development practices.
-
 
 
 ### 2.3. Consistency in Route Naming
