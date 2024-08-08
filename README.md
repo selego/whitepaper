@@ -145,15 +145,6 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 ```
 
 
-
-```js
-
-```
-
-```js
-
-```
-
 ## 3. Front-end
 
 
