@@ -41,7 +41,12 @@ This guide covers repository structure, branching strategy, commit messages, pul
 
 ### 1.1. Code Readiness
 
+### 1.1.1. Early returns
+
+
 Implementing early returns in your code can significantly enhance readability and maintainability. Instead of nesting logic within conditional blocks, an early return can simplify the structure of your functions by handling edge cases upfront and allowing the core logic to be more linear and easier to follow. Consider the following example:
+
+#### ✖️ How to not do it:
 
 ```js
 const { data, ok } = await api.get(`/meeting/${id}`);
@@ -51,6 +56,9 @@ if (ok) {
   ...
 }
 ```
+
+#### ✅ How to Do it
+
 This code can be made more readable by applying an early return:
 
 ```js
@@ -63,7 +71,52 @@ setMeeting(data);
 
 ...
 ```
+
+#### ❓ Why to do this
 By immediately returning when the condition is not met, the main logic is not indented and the function becomes more straightforward to understand.
+
+### 1.1.2. Easy confirmation
+
+A cheap way to get a confirmation behavior on deletion or important tasks. The only way to do it on MVPS:
+
+```js
+async function onDelete(){
+  if (!window.confirm({Are you sure ?})) return;
+  await submit();
+}
+```
+
+### 1.2. Beginner Mistakes we see way to often
+
+### 1.2.1 Filters in the frontend
+
+#### ✖️ How to not do it:
+
+```js
+const {data, ok} = await api.get("/meeting");
+setMeetings(response.data.filter((e) => !e.isDeleted));
+```
+
+#### ❓ Why to not do this
+
+- because it will fuck up your pagination
+- You will never know how many items you have
+- It will not scale
+
+
+#### ✅ How to Do it
+
+```js
+const {data, ok} = await api.post("/meeting/search",{deleted:false });
+setMeetings(response.data);
+
+```
+
+```js
+const query = {};
+query.isDeleted = false;
+const data = await MeetingModel.find(query).sort({ createdAt: -1 });
+```
 
 
 
@@ -72,6 +125,8 @@ By immediately returning when the condition is not met, the main logic is not in
 ### 2.1. The Post Search
 
 Here is the method we use to fetch lists. In most cases, we need to perform extensive filtering on these lists, and a classical GET request can become really messy due to the querying. Instead, we use a POST request for more flexible querying.
+
+#### ✅ How to Do it
 
 ```js
 router.post("/search", async (req, res) => {
@@ -91,10 +146,8 @@ router.post("/search", async (req, res) => {
 });
 ```
 
-
+#### ❓ Why to not do this
 By using a POST request, we can send a complex object in the body of the request, which allows us to construct more flexible and powerful queries.
-
-
 
 ### 2.2. Respect 1 Post Route, 1 Object Created
 
@@ -114,7 +167,7 @@ Adhering to the principle of "1 POST route, 1 object created" helps mitigate the
 
 Maintaining consistency in route naming conventions is essential for improving code readability and maintainability. One approach to achieving this is by avoiding the duplication of controller names within routes and using generic identifiers like `:id` instead. For example, instead of using both `dataRoomId` and `data_room_id`, simply using `:id` can reduce confusion and make the code easier to work with. This method not only simplifies the route definitions but also facilitates copying and pasting, as the placeholder is generic and applicable across different contexts.
 
-#### How Not to Do It
+#### ✖️ How to not do it:
 
 Using specific names for different routes can lead to inconsistency and confusion.
 
@@ -128,7 +181,7 @@ router.get("/dataRoom/:dataRoomId", passport.authenticate(["user"], { session: f
   }
 });
 ```
-#### How to Do it
+#### ✅ How to Do it
 
 Using a generic :id makes the routes cleaner and more maintainable.
 
@@ -147,11 +200,9 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 
 ## 3. Front-end
 
-
 ### 3.1. Handling API Responses:
 
-#### How not to do it
-
+#### ✖️ How to not do it:
 
 ```javascript
 useEffect(() => {
@@ -167,7 +218,7 @@ useEffect(() => {
   }
 }, []);
 ```
-#### How to do it
+#### ✅ How to Do it
 
 ```javascript
 const fetchEvents = async () => {
@@ -195,6 +246,8 @@ When fetching data, it's crucial to maintain a clear separation of concerns. If 
 
 Here’s an example of how this problem manifests:
 
+#### ✖️ How to not do it:
+
 ```js
 useEffect(() => {
   const fetchData = async () => {
@@ -214,14 +267,14 @@ useEffect(() => {
 }, [annonceId]);
 ```
 
-#### The key arguements for not doing it
+#### ❓ Why to not do this
 
 1. **Complex Controller Logic:** Fetching both `annonce` and `company` in the same call increases the complexity of the controller.
 2. **Inconsistent Data Object:** The returned data object from the controller may contain inconsistent structures.
 3. **Lack of Early Return:** The absence of early return statements reduces code readability.
 4. **No Destructuring:** Not using `{ data, ok }` destructuring leads to less clean and more error-prone code.
 
-#### Improved Approach
+#### ✅ How to Do it
 
 Separate the fetching logic to maintain clarity and consistency, with functions defined outside of `useEffect`:
 
@@ -252,7 +305,7 @@ useEffect(() => {
 }, [annonceId, companyId]);
 ```
 
-#### The key arguements
+#### ❓ Why to  do this
 
 1. **Clear Separation of Concerns:** Each function is responsible for fetching a specific piece of data.
 2. **Simplified Controller Logic:** The controller remains simple and focused.
@@ -260,12 +313,11 @@ useEffect(() => {
 4. **Early Returns and Destructuring:** Using early returns and destructuring improves code readability and reduces potential errors.
 
 
-
 ### 3.3. Avoid Partial Data Extraction
 
 When fetching data from an API, resist the temptation to extract and store only part of the response object, like a specific field. This can lead to issues when scaling or updating your application. Instead, store the entire object, which ensures future flexibility and easier code maintenance.
 
-#### Example of Bad Practice
+#### ✖️ How to not do it:
 
 ```javascript
 const getInvitations = async () => {
@@ -283,7 +335,7 @@ const getInvitations = async () => {
 };
 ```
 
-#### Improved Approach
+#### ✅ How to Do it
 
 Instead of extracting specific fields, store the entire object:
 
@@ -304,7 +356,7 @@ const getInvitations = async () => {
 
 ```
 
-#### The key arguements
+#### ❓ Why to do this
 - Storing only a subset of the response may lead to refactoring when additional fields are needed.
 - Storing the complete data object provides more flexibility for future changes.
 - This approach scales better as the application grows and requirements evolve.
@@ -396,9 +448,11 @@ function validateContact(contact) {
 
 ### 6.3. How to Upload Files
 
-Integrating the same file handler improves our efficiency. Please use the approach below
+Integrating the same file handler improves our efficiency. Please use the approach below.
 
-#### Backend Counterpart
+#### ✅ How to Do it
+
+##### Backend Counterpart
 
 To streamline the process of uploading files such as photos, audio, video, or documents to our database, we typically use S3 buckets from CleverCloud. Instead of duplicating the same code across multiple repositories, we introduced a dedicated file handler. Here's an example of the improved approach:
 
@@ -439,7 +493,7 @@ module.exports = router;
 
 With this file handler, you only need to copy-paste it into your controllers and adjust the necessary S3 keys for each new project. This handler processes the file upload and returns the URL(s), which you can then add to your model along with other data during create or update operations.
 
-#### Frontend Counterpart
+##### Frontend Counterpart
 
 The duplication reduction extends to the frontend as well. By using a reusable file input component, you can streamline file uploads across different projects. Here's an example from our global components:
 
