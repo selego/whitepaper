@@ -281,7 +281,7 @@ const getInvitations = async () => {
   // Only storing a single field (user_id) from the data
   setInvitations(data.map(membership => membership.user_id));
 };
-
+```
 
 #### Improved Approach
 
