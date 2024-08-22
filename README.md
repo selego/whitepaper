@@ -21,20 +21,21 @@ This guide covers repository structure, branching strategy, commit messages, pul
 ## Table of Contents
 
 1. [Javascript](#1-javascript)
-   1. [Code Readiness](#11-code-readiness)
+   1.1 [Code Readiness](#11-code-readiness)
 2. [Back-end](#2-back-end)
-   1. [The Post Search](#21-the-post-search)
-   2. [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
-   3. [Consistency in Route Naming](#23-consistency-in-route-naming)
+   2.1 [The Post Search](#21-the-post-search)
+   2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
+   2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
 3. [Front-end](#3-front-end)
-   1. [Conventions on Calling API](#31-conventions-on-calling-api)
-   2. [Separating Concerns](#32-separating-concerns)
+   3.1 [Conventions on Calling API](#31-conventions-on-calling-api)
+   3.2 [Separating Concerns](#32-separating-concerns)
+  3.3 [Avoid Partial Data Extraction](#33-avoid-partial-data-extraction)
 4. [DevOps](#4-devops)
 5. [NoCode](#5-nocode)
 6. [Project](#6-project)
-   1. [Architecture](#61-architecture)
-   2. [Validation?](#62-usage-of-joi-in-early-phases)
-   3. [Uploading Files](#63-how-to-upload-files)
+   6.1 [Architecture](#61-architecture)
+   6.2 [Validation?](#62-usage-of-joi-in-early-phases)
+   6.3. [Uploading Files](#63-how-to-upload-files)
 
 
 ## 1. Javascript
@@ -365,6 +366,11 @@ const getInvitations = async () => {
 ```js
 
 ```
+
+## 4. DevOps
+
+## 5. NoCode
+
 ## 6. Project
 
 ### 6.1. Architecture
