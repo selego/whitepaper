@@ -148,7 +148,7 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 ## 3. Front-end
 
 
-### 3.1. Conventions on Calling API
+### 3.1. Handling API Responses:
 
 #### How not to do it
 
@@ -189,7 +189,6 @@ useEffect(() => {
 ```
 
 
-
 ### 3.2. Separating Concerns
 
 When fetching data, it's crucial to maintain a clear separation of concerns. If you’re fetching an `annonce`, focus solely on fetching the `annonce`. Fetching additional data, such as a company, at the same time complicates the controller and the call itself. This approach introduces inconsistency in the data object returned from the controller.
@@ -215,7 +214,7 @@ useEffect(() => {
 }, [annonceId]);
 ```
 
-#### Issues with the Above Approach
+#### The key arguements for not doing it
 
 1. **Complex Controller Logic:** Fetching both `annonce` and `company` in the same call increases the complexity of the controller.
 2. **Inconsistent Data Object:** The returned data object from the controller may contain inconsistent structures.
@@ -253,13 +252,62 @@ useEffect(() => {
 }, [annonceId, companyId]);
 ```
 
-#### Benefits of the Improved Approach
+#### The key arguements
 
 1. **Clear Separation of Concerns:** Each function is responsible for fetching a specific piece of data.
 2. **Simplified Controller Logic:** The controller remains simple and focused.
 3. **Consistent Data Handling:** Each data object is handled independently, maintaining consistency.
 4. **Early Returns and Destructuring:** Using early returns and destructuring improves code readability and reduces potential errors.
 
+
+
+### 3.3. Avoid Partial Data Extraction
+
+When fetching data from an API, resist the temptation to extract and store only part of the response object, like a specific field. This can lead to issues when scaling or updating your application. Instead, store the entire object, which ensures future flexibility and easier code maintenance.
+
+#### Example of Bad Practice
+
+```javascript
+const getInvitations = async () => {
+  const { data, ok } = await api.post('/membership_event/search', {
+    event_id: id
+  });
+
+  if (!ok) {
+    toast.error('Error loading invitations');
+    return;
+  }
+
+  // Only storing a single field (user_id) from the data
+  setInvitations(data.map(membership => membership.user_id));
+};
+
+
+#### Improved Approach
+
+Instead of extracting specific fields, store the entire object:
+
+```javascript
+const getInvitations = async () => {
+  const { data, ok } = await api.post('/membership_event/search', {
+    event_id: id
+  });
+
+  if (!ok) {
+    toast.error('Error loading invitations');
+    return;
+  }
+
+  // Store the full data object
+  setInvitations(data);
+};
+
+```
+
+#### The key arguements
+- Storing only a subset of the response may lead to refactoring when additional fields are needed.
+- Storing the complete data object provides more flexibility for future changes.
+- This approach scales better as the application grows and requirements evolve.
 
 
 ```js
