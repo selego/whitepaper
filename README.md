@@ -27,7 +27,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
 3. [Front-end](#3-front-end)
-   - 3.1 [Conventions on Calling API](#31-conventions-on-calling-api)
+   - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
    - 3.3 [Avoid Partial Data Extraction](#33-avoid-partial-data-extraction)
 4. [DevOps](#4-devops)
