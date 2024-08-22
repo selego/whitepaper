@@ -24,7 +24,6 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 1.1 [Code Readiness](#11-code-readiness)
      - 1.1.1 [Early Returns](#111-early-returns)
      - 1.1.2 [Easy Confirmation](#112-easy-confirmation)
-    
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
 2. [Back-end](#2-back-end)
