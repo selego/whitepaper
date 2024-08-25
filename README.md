@@ -387,8 +387,23 @@ We try to keep the same project architecture because:
 project-root
 │
 ├── api
-│   └── (api-related files and configurations)
-│
+│   ├── src
+│   │   ├── models
+│   │   │   └── (all data models)
+│   │   │
+│   │   ├── controllers
+│   │   │   └── (all controllers) 
+│   │   │
+│   │   ├── services
+│   │   │   └── (service-related files)
+│   │   │
+│   │   ├── utils
+│   │   │     └── (utility files)
+│   │   │
+│   │   └── index.js
+│   │
+│   └── (other non-source files and configurations)
+│   │
 ├── app
 │   ├── src
 │   │   ├── components
