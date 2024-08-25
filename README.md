@@ -403,7 +403,7 @@ project-root
 │   │   └── index.js
 │   │
 │   └── (other non-source files and configurations)
-│   │
+│   
 ├── app
 │   ├── src
 │   │   ├── components
