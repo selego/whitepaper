@@ -529,15 +529,12 @@ You can copy-paste this component into your project and adjust the styling to ma
 ### 6.4 Domain Scoping
 
 #### Introduction
-
 In software development, domain scoping is about clearly defining and separating the different business objects and their related logic in your application. This helps avoid confusion and complexity as your project grows.
 
-##### Example
+#### Example
+Let's say you have an application for managing clients and suppliers. 
 
-Let's say you have an application for managing contacts which could be clients or suppliers. 
-
-#### ✖️ Things You Don’t Want to See
-
+##### ✖️ Things You Don’t Want to See
 Avoid these practices to prevent messy and hard-to-maintain code:
 
 1. **Using the Same Component for Multiple Routes:**
@@ -561,12 +558,6 @@ const List = () => {
   const [selectedContact, setSelectedContact] = useState();
   const isClient = location.pathname.indexOf("/clients") !== -1;
   const type = isClient ? "client" : "supplier";
-
-  return (
-    <div className="font-[Helvetica] text-center text-[24px] mb-4">
-      Creating a {type}
-    </div>
-  );
 };
 ```
 
@@ -586,16 +577,19 @@ const List = () => {
 };
 ```
 
-- **PROS:** Less code duplication, which can make development faster and more enjoyable.
-- **CONS:** Maintaining this code can become complex, as you'll need to handle different behaviors and avoid too much conditional logic.
+- **PROS:** Reduced code duplication, faster development and temporarily happy dev 😊.
+- **CONS:** Can lead to complex maintenance due to different behaviors and excessive conditional logic, making the temporary happiness fade 😅.
+
+#### Key Principles for Domain-Driven Design
+1. **Understand the Business**: Know how the business operates and what users need.
+2. **Separate Business Objects**: Each business object should have its own logic. **🚫 Avoid mixing them**. Keep them separate in your design and code.
+3. **Create a Common Language**: Align the technical and business sides with clear terms and concepts. This helps in planning and defining project goals.
 
 #### Improved Architecture 💡
 **Bad architecture**
 ```
 app
 ├── src
-│   ├── components
-│   │   └── (common components)
 │   ├── scenes
 │   │   ├── contacts
 │   │   │   ├── createContacts.jsx
@@ -603,15 +597,12 @@ app
 │   │   │   ├── index.jsx
 │   │   │   ├── list.jsx
 │   │   │   └── (other contact-related files)
-│   ├── services
-│   └── utils
+│   │   └── (other scenes)
 ```
 **✅ Domain-centric architecture**
 ```
 app
 ├── src
-│   ├── components
-│   │   └── (common components)
 │   ├── scenes
 │   │   ├── clients
 │   │   │   ├── createClients.jsx
@@ -625,6 +616,8 @@ app
 │   │       ├── index.jsx
 │   │       ├── list.jsx
 │   │       └── (other supplier-related files)
-│   ├── services
-│   └── utils
 ```
+
+Yes, it’s boring to duplicate code, but that prevents a future organizational mess with duplicate business logic everywhere, and nested rendering logic in all components.
+
+[#Reference](https://petesena.medium.com/why-the-way-you-think-about-business-development-is-all-wrong-1d74c58c8628)
