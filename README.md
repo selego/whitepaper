@@ -24,6 +24,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 1.1 [Code Readiness](#11-code-readiness)
      - 1.1.1 [Early Returns](#111-early-returns)
      - 1.1.2 [Easy Confirmation](#112-easy-confirmation)
+     - 1.1.3 [Update After an Action](#113-update-after-an-action)
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
 2. [Back-end](#2-back-end)
@@ -92,6 +93,42 @@ async function onDelete(){
   await submit();
 }
 ```
+
+### 1.1.3 Update After an Action
+Effective state management is crucial when performing actions like creating, updating, or deleting data. Updating the state directly after these actions helps maintain UI consistency with the server's data.
+
+#### ✖️ How to not do it
+Here’s a suboptimal approach for handling a delete action that some devs often use after a delete:
+```js
+// Delete product
+async function handleDelete(id) {
+  const confirm = window.confirm("Are you sure?");
+  if (!confirm) return;
+  await api.remove(`/product/${id}`);
+  toast.success("Successfully removed");
+  setProducts(products.filter((product) => product.id !== id)); // 🚫 Manual state update
+}
+```
+#### ❓ Why to not do this
+Manually updating state after an action can be tedious and error-prone, leading to complexity and mismatches between the UI and server data. It makes the code harder to maintain and understand.
+
+#### ✅ How to Do it
+A more maintainable approach is to refresh the data after the action is completed. This ensures that the state remains consistent with the server's data:
+
+```js
+// Delete product
+async function handleDelete(id) {
+  const confirm = window.confirm("Are you sure?");
+  if (!confirm) return;
+  await api.remove(`/product/${id}`);
+  toast.success("Successfully removed");
+  fetch(); // ✅ Refresh data
+}
+```
+**Benefits**:
+Simplicity: Using fetch() to refresh data reduces manual state management, making the code cleaner.
+Consistency: Ensures that the application state is always in sync with the server.
+Maintainability: Reduces the risk of bugs and simplifies future updates.
 
 ### 1.2. Beginner Mistakes we see way to often
 
