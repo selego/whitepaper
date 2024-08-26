@@ -31,7 +31,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.1 [The Post Search](#21-the-post-search)
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
-   - 2.3 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
+   - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -244,7 +244,7 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 #### ✖️ How to not do it:
 Avoid using a flat structure if it complicates relationships and requires excessive data duplication. For instance:
 
-Flat Data Example (Many objects foreach desk 😵‍💫):
+Flat Data Example (Many objects for each desk 😵‍💫):
 ```json
 [
   { "deskId": "desk1", "userId": "user1" },
@@ -259,7 +259,7 @@ Using a flat structure can make relationship management complex. It can lead to 
 #### ✅ How to Do it:
 Consider using a nested data structure to simplify management and avoid redundancy:
 
-Nested Data Example (Single object foreach desk 😊):
+Nested Data Example (Single object for each desk 😊):
 ```json
 [
   { "deskId": "desk1", "users": ["user1", "user2", "user3"] }
