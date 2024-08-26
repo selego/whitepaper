@@ -526,3 +526,105 @@ The duplication reduction extends to the frontend as well. By using a reusable f
 
 You can copy-paste this component into your project and adjust the styling to match your needs. This way, the file upload process is standardized and simplified, improving overall efficiency.
 
+### 6.4 Domain Scoping
+
+#### Introduction
+
+In software development, domain scoping is about clearly defining and separating the different business objects and their related logic in your application. This helps avoid confusion and complexity as your project grows.
+
+##### Example
+
+Let's say you have an application for managing contacts which could be clients or suppliers. 
+
+#### ✖️ Things You Don’t Want to See
+
+Avoid these practices to prevent messy and hard-to-maintain code:
+
+1. **Using the Same Component for Multiple Routes:**
+```js
+const routes = (isLoggedIn, isAdmin) => [
+  {
+    path: "/clients/*",
+    element: isLoggedIn ? <ContactList /> : <Navigate to="/auth" />,
+  },
+  {
+    path: "/suppliers/*",
+    element: isLoggedIn ? <ContactList /> : <Navigate to="/auth" />,
+  },
+];
+   ```
+
+2. **Switching Between Business Objects in the Same Component:**
+```js
+const List = () => {
+  const [contacts, setContacts] = useState();
+  const [selectedContact, setSelectedContact] = useState();
+  const isClient = location.pathname.indexOf("/clients") !== -1;
+  const type = isClient ? "client" : "supplier";
+
+  return (
+    <div className="font-[Helvetica] text-center text-[24px] mb-4">
+      Creating a {type}
+    </div>
+  );
+};
+```
+
+3. **Conditional Rendering for Different Business Objects:**
+```js
+const List = () => {
+  const [contacts, setContacts] = useState();
+  const [selectedContact, setSelectedContact] = useState();
+  const isClient = location.pathname.indexOf("/clients") !== -1;
+  const type = isClient ? "client" : "supplier";
+
+  return (
+    <div className="font-[Helvetica] text-center text-[24px] mb-4">
+      Creating a {type}
+    </div>
+  );
+};
+```
+
+- **PROS:** Less code duplication, which can make development faster and more enjoyable.
+- **CONS:** Maintaining this code can become complex, as you'll need to handle different behaviors and avoid too much conditional logic.
+
+#### Improved Architecture 💡
+**Bad architecture**
+```
+app
+├── src
+│   ├── components
+│   │   └── (common components)
+│   ├── scenes
+│   │   ├── contacts
+│   │   │   ├── createContacts.jsx
+│   │   │   ├── editContacts.jsx
+│   │   │   ├── index.jsx
+│   │   │   ├── list.jsx
+│   │   │   └── (other contact-related files)
+│   ├── services
+│   └── utils
+```
+**✅ Domain-centric architecture**
+```
+app
+├── src
+│   ├── components
+│   │   └── (common components)
+│   ├── scenes
+│   │   ├── clients
+│   │   │   ├── createClients.jsx
+│   │   │   ├── editClients.jsx
+│   │   │   ├── index.jsx
+│   │   │   ├── list.jsx
+│   │   │   └── (other client-related files)
+│   │   └── suppliers
+│   │       ├── createClients.jsx
+│   │       ├── editClients.jsx
+│   │       ├── index.jsx
+│   │       ├── list.jsx
+│   │       └── (other supplier-related files)
+│   ├── services
+│   └── utils
+```
