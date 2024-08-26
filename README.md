@@ -102,8 +102,7 @@ Here’s a suboptimal approach for handling a delete action that some devs often
 ```js
 // Delete product
 async function handleDelete(id) {
-  const confirm = window.confirm("Are you sure?");
-  if (!confirm) return;
+  if (!window.confirm("Are you sure?")) return;
   await api.remove(`/product/${id}`);
   toast.success("Successfully removed");
   setProducts(products.filter((product) => product.id !== id)); // 🚫 Manual state update
@@ -118,17 +117,16 @@ A more maintainable approach is to refresh the data after the action is complete
 ```js
 // Delete product
 async function handleDelete(id) {
-  const confirm = window.confirm("Are you sure?");
-  if (!confirm) return;
+  if (!window.confirm("Are you sure?")) return;
   await api.remove(`/product/${id}`);
   toast.success("Successfully removed");
   fetch(); // ✅ Refresh data
 }
 ```
-**Benefits**:
-Simplicity: Using fetch() to refresh data reduces manual state management, making the code cleaner.
-Consistency: Ensures that the application state is always in sync with the server.
-Maintainability: Reduces the risk of bugs and simplifies future updates.
+#### ❓ Why to do this
+- **Simplicity**: Using fetch() to refresh data reduces manual state management, making the code cleaner.
+- **Consistency**: Ensures that the application state is always in sync with the server.
+- **Maintainability**: Reduces the risk of bugs and simplifies future updates.
 
 ### 1.2. Beginner Mistakes we see way to often
 
