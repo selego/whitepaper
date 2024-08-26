@@ -40,6 +40,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    -  6.1 [Architecture](#61-architecture)
    - 6.2 [Validation?](#62-usage-of-joi-in-early-phases)
    - 6.3. [Uploading Files](#63-how-to-upload-files)
+   - 6.4. [Domain Scoping](#64-domain-scoping)
 
 
 ## 1. Javascript
@@ -526,3 +527,100 @@ The duplication reduction extends to the frontend as well. By using a reusable f
 
 You can copy-paste this component into your project and adjust the styling to match your needs. This way, the file upload process is standardized and simplified, improving overall efficiency.
 
+### 6.4 Domain Scoping
+
+#### Introduction
+In software development, domain scoping is about clearly defining and separating the different business objects and their related logic in your application. This helps avoid confusion and complexity as your project grows.
+
+#### Example
+Let's say you have an application for managing clients and suppliers. 
+
+#### ✖️ How to not do it:
+Avoid these practices to prevent messy and hard-to-maintain code:
+
+1. **Using the Same Component for Multiple Routes:**
+```js
+const routes = (isLoggedIn, isAdmin) => [
+  {
+    path: "/clients/*",
+    element: isLoggedIn ? <ContactList /> : <Navigate to="/auth" />,
+  },
+  {
+    path: "/suppliers/*",
+    element: isLoggedIn ? <ContactList /> : <Navigate to="/auth" />,
+  },
+];
+   ```
+
+2. **Switching Between Business Objects in the Same Component:**
+```js
+const List = () => {
+  const [contacts, setContacts] = useState();
+  const [selectedContact, setSelectedContact] = useState();
+  const isClient = location.pathname.indexOf("/clients") !== -1;
+  const type = isClient ? "client" : "supplier";
+};
+```
+
+3. **Conditional Rendering for Different Business Objects:**
+```js
+const List = () => {
+  const [contacts, setContacts] = useState();
+  const [selectedContact, setSelectedContact] = useState();
+  const isClient = location.pathname.indexOf("/clients") !== -1;
+  const type = isClient ? "client" : "supplier";
+
+  return (
+    <div className="font-[Helvetica] text-center text-[24px] mb-4">
+      Creating a {type}
+    </div>
+  );
+};
+```
+
+4. **Bad architecture**
+```
+app
+├── src
+│   ├── scenes
+│   │   ├── contacts
+│   │   │   ├── createContacts.jsx
+│   │   │   ├── editContacts.jsx
+│   │   │   ├── index.jsx
+│   │   │   ├── list.jsx
+│   │   │   └── (other contact-related files)
+│   │   └── (other scenes)
+```
+
+#### ❓ Why to not do this
+- **PROS:** Reduced code duplication, faster development and temporarily happy dev 😊.
+- **CONS:** Can lead to complex maintenance due to different behaviors and excessive conditional logic, making the temporary happiness fade 😅.
+
+#### ✅ How to Do it
+1. **Key Principles for Domain-Driven Design**
+   1. **Understand the Business**: Know how the business operates and what users need.
+   2. **Separate Business Objects**: Each business object should have its own logic. **🚫 Avoid mixing them**. Keep them separate in your design and code.
+   3. **Create a Common Language**: Align the technical and business sides with clear terms and concepts. This helps in planning and defining project goals.
+
+2. **Improved, domain-centric architecture**
+```
+app
+├── src
+│   ├── scenes
+│   │   ├── clients
+│   │   │   ├── createClients.jsx
+│   │   │   ├── editClients.jsx
+│   │   │   ├── index.jsx
+│   │   │   ├── list.jsx
+│   │   │   └── (other client-related files)
+│   │   └── suppliers
+│   │       ├── createClients.jsx
+│   │       ├── editClients.jsx
+│   │       ├── index.jsx
+│   │       ├── list.jsx
+│   │       └── (other supplier-related files)
+```
+
+Yes, it’s boring to duplicate code, but that prevents a future organizational mess with duplicate business logic everywhere, and nested rendering logic in all components.
+
+[#Reference](https://petesena.medium.com/why-the-way-you-think-about-business-development-is-all-wrong-1d74c58c8628)
