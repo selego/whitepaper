@@ -31,6 +31,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.1 [The Post Search](#21-the-post-search)
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
+   - 2.3 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -94,7 +95,7 @@ async function onDelete(){
 }
 ```
 
-### 1.1.3 Update After an Action
+### 1.1.3. Update After an Action
 Effective state management is crucial when performing actions like creating, updating, or deleting data. Updating the state directly after these actions helps maintain UI consistency with the server's data.
 
 #### ✖️ How to not do it
@@ -238,6 +239,37 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 });
 
 ```
+
+### 2.4. Flat Data vs Nested Data in MongoDB
+#### ✖️ How to not do it:
+Avoid using a flat structure if it complicates relationships and requires excessive data duplication. For instance:
+
+Flat Data Example (Many objects foreach desk 😵‍💫):
+```json
+[
+  { "deskId": "desk1", "userId": "user1" },
+  { "deskId": "desk1", "userId": "user2" },
+  { "deskId": "desk1", "userId": "user3" }
+]
+```
+
+#### ❓ Why to not do this:
+Using a flat structure can make relationship management complex. It can lead to redundant data and inefficient indexing. For instance, if you need to add additional information to the relationship, you might end up duplicating data or creating extra collections, making updates harder and error-prone.
+
+#### ✅ How to Do it:
+Consider using a nested data structure to simplify management and avoid redundancy:
+
+Nested Data Example (Single object foreach desk 😊):
+```json
+[
+  { "deskId": "desk1", "users": ["user1", "user2", "user3"] }
+]
+```
+
+#### ❓ Why to do this
+Nested data structures simplify updates and avoid redundancy by keeping related data in one place. For example, a single document can include all user assignments for a desk, so you don't repeat the desk information. This approach reduces duplication and avoids the need for extra collections, making it easier to manage and query your data. MongoDB is designed to handle these nested structures efficiently, aligning well with its strengths.
+
+Lot of different points can be added, but those are some of the most important, feel free to contribute by adding your personal experience. And last question, I think flat data is great BUT why do we keep using mongo IF we want to flatten everything like that ? What would be the downside of using SQL everywhere ( except for migration that can be tiresome to deal with )
 
 
 ## 3. Front-end
