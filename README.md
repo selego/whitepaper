@@ -40,6 +40,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    -  6.1 [Architecture](#61-architecture)
    - 6.2 [Validation?](#62-usage-of-joi-in-early-phases)
    - 6.3. [Uploading Files](#63-how-to-upload-files)
+   - 6.4. [Domain Scoping](#64-domain-scoping)
 
 
 ## 1. Javascript
@@ -534,7 +535,7 @@ In software development, domain scoping is about clearly defining and separating
 #### Example
 Let's say you have an application for managing clients and suppliers. 
 
-##### ✖️ Things You Don’t Want to See
+#### ✖️ How to not do it:
 Avoid these practices to prevent messy and hard-to-maintain code:
 
 1. **Using the Same Component for Multiple Routes:**
@@ -577,16 +578,7 @@ const List = () => {
 };
 ```
 
-- **PROS:** Reduced code duplication, faster development and temporarily happy dev 😊.
-- **CONS:** Can lead to complex maintenance due to different behaviors and excessive conditional logic, making the temporary happiness fade 😅.
-
-#### Key Principles for Domain-Driven Design
-1. **Understand the Business**: Know how the business operates and what users need.
-2. **Separate Business Objects**: Each business object should have its own logic. **🚫 Avoid mixing them**. Keep them separate in your design and code.
-3. **Create a Common Language**: Align the technical and business sides with clear terms and concepts. This helps in planning and defining project goals.
-
-#### Improved Architecture 💡
-**Bad architecture**
+4. **Bad architecture**
 ```
 app
 ├── src
@@ -599,7 +591,18 @@ app
 │   │   │   └── (other contact-related files)
 │   │   └── (other scenes)
 ```
-**✅ Domain-centric architecture**
+
+#### ❓ Why to not do this
+- **PROS:** Reduced code duplication, faster development and temporarily happy dev 😊.
+- **CONS:** Can lead to complex maintenance due to different behaviors and excessive conditional logic, making the temporary happiness fade 😅.
+
+#### ✅ How to Do it
+1. **Key Principles for Domain-Driven Design**
+   1. **Understand the Business**: Know how the business operates and what users need.
+   2. **Separate Business Objects**: Each business object should have its own logic. **🚫 Avoid mixing them**. Keep them separate in your design and code.
+   3. **Create a Common Language**: Align the technical and business sides with clear terms and concepts. This helps in planning and defining project goals.
+
+2. **Improved, domain-centric architecture**
 ```
 app
 ├── src
