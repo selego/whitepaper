@@ -34,13 +34,14 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
    - 3.3 [Avoid Partial Data Extraction](#33-avoid-partial-data-extraction)
+   - 3.4 [Component Scoping](#34-component-scoping)
 4. [DevOps](#4-devops)
 5. [NoCode](#5-nocode)
 6. [Project](#6-project)
-   -  6.1 [Architecture](#61-architecture)
+   - 6.1 [Architecture](#61-architecture)
    - 6.2 [Validation?](#62-usage-of-joi-in-early-phases)
-   - 6.3. [Uploading Files](#63-how-to-upload-files)
-   - 6.4. [Domain Scoping](#64-domain-scoping)
+   - 6.3 [Uploading Files](#63-how-to-upload-files)
+   - 6.4 [Domain Scoping](#64-domain-scoping)
 
 
 ## 1. Javascript
@@ -371,6 +372,153 @@ const getInvitations = async () => {
 ```js
 
 ```
+
+### 3.4 Component Scoping
+
+Component scoping, which is the practice of defining clear boundaries for each component's responsibilities, when done wrong, will increase complexity (Change Amplification). Poorly scoped components can lead to tangled logic and harder maintenance. 
+
+
+#### ✖️ How to not do it:
+Here is an example of a wrong component scoping often seen. The page is composed of a list of cards “meetings” and a modal to bind your account.
+Take your time, it's not easy to read.
+```js
+export default function Meetings() {
+  const [meetings, setMeetings] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [value, setValue] = useState('');
+
+  useEffect(() => {
+    fetchMeetings();
+  }, []);
+
+  async function fetchMeetings() {
+    // API call to get meetings data and set state
+  }
+
+  const onSaveUrl = async (val) => {
+    // API call to save URL and handle response
+  };
+
+  const meetingsList = meetings.map((meeting) => (
+    <div key={meeting._id} className="...">
+      {/* Render each meeting card */}
+    </div>
+  ));
+
+  return (
+    <>
+      <div className="relative p-6 bg-[#272727] text-white min-h-screen">
+        {/* Render page header */}
+        <button
+          type="button"
+          className="border hover:border-white hover:shadow-neon bg-red-800 ml-4 mb-10 rounded-lg px-3 py-2"
+          onClick={() => setOpenModal(true)}
+        >
+          Bind your account
+        </button>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {meetingsList}
+        </div>
+      </div>
+      <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+        <form>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <button type="button" onClick={() => onSaveUrl(value)}>
+            Save
+          </button>
+          <a
+            href="https://accounting.selego.co/learn/655f367c33085306bd711304?index=4"
+            target="_blank"
+          >
+            Watch the tuto
+          </a>
+        </form>
+      </Modal>
+    </>
+  );
+}
+
+```
+
+#### ❓ Why to not do this
+The "Bind Your Account" feature consists of a field, a modal, and a save function. In the example above, these elements are scattered throughout the component, creating a disorganized and messy codebase. From a business perspective, it makes sense to isolate this feature into its own component, allowing for easier improvements or removal later on. In fact, we ended up deleting it just a day later.
+
+#### ✅ How to Do it
+Instead, isolate the "Bind Your Account" feature into its own component. This will make your code more modular, easier to maintain, and scalable for future changes. Here's how you could refactor the code:
+
+```js
+export default function Meetings() {
+  const [meetings, setMeetings] = useState([]);
+
+  useEffect(() => {
+    fetchMeetings();
+  }, []);
+
+  async function fetchMeetings() {
+    // API call to get meetings data and set state
+  }
+
+  return (
+    <>
+      <div className="relative p-6 bg-[#272727] text-white min-h-screen">
+        {/* Render page header */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          {meetings.map((meeting) => (
+            <div key={meeting._id} className="...">
+              {/* Render each meeting card */}
+            </div>
+          ))}
+        </div>
+      </div>
+      <BindAccount />
+    </>
+  );
+}
+
+const BindAccount = () => {
+  const [openModal, setOpenModal] = useState(false); // State to manage modal visibility
+  const [value, setValue] = useState(''); // State for input value
+
+  const onSaveUrl = async (val) => {
+    // API call to save URL and handle response
+  };
+
+  return (
+    <>
+      <button
+        type="button"
+        className="border hover:border-white hover:shadow-neon bg-red-800 ml-4 mb-10 rounded-lg px-3 py-2"
+        onClick={() => setOpenModal(true)}
+      >
+        Bind your account
+      </button>
+      <Modal isOpen={openModal} onClose={() => setOpenModal(false)}>
+        <form>
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+          />
+          <button type="button" onClick={() => onSaveUrl(value)}>
+            Save
+          </button>
+          <a
+            href="https://accounting.selego.co/learn/655f367c33085306bd711304?index=4"
+            target="_blank"
+          >
+            Watch the tuto
+          </a>
+        </form>
+      </Modal>
+    </>
+  );
+};
+```
+By refactoring your code this way, each feature is neatly scoped into its own component, making your codebase cleaner, more maintainable, and less prone to bugs as your application evolves.
 
 ## 4. DevOps
 
