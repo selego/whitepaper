@@ -25,6 +25,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
      - 1.1.1 [Early Returns](#111-early-returns)
      - 1.1.2 [Easy Confirmation](#112-easy-confirmation)
      - 1.1.3 [Update After an Action](#113-update-after-an-action)
+     - 1.1.4 [Consistency is Key](#114-consistency-is-key)
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
 2. [Back-end](#2-back-end)
@@ -130,6 +131,15 @@ async function handleDelete(id) {
 - **Simplicity**: Using fetch() to refresh data reduces manual state management, making the code cleaner.
 - **Consistency**: Ensures that the application state is always in sync with the server.
 - **Maintainability**: Reduces the risk of bugs and simplifies future updates.
+
+### 1.1.4 Consistency is Key
+It's better to be consistently BAD than non-consistently GOOD
+
+Imagine a system initially developed with Technique A. A new software developer joins and starts using Technique B, which is objectively better than Technique A. Years later, that developer is replaced by another, who uses Technique C, an arguably better approach than either Technique A or Technique B. Let this repeat. What you end up with is a software system with multiple ways of doing the same thing.
+
+You use up precious brain-space accommodating these different methods, never really sure which one you’ll encounter in the codebase.
+
+Although beneficial individually, these improvements as a group introduce inconsistency, making the system harder to reason about over time. Code should look like it was written by a single individual
 
 ### 1.2. Beginner Mistakes we see way to often
 
