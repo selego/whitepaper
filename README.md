@@ -32,6 +32,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
    - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
+   - 2.5 [Consistent API Responses ({data} object)](#25-consistent-api-responses-data-object)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -264,13 +265,29 @@ Nesting data in MongoDB can make managing relationships between entities more co
 #### ❓ Why to not do this:
 Nesting can lead to maintenance issues. For instance, if you need to update the department name from "Sales" to "Marketing," you must update it for every user in the nested array. Additionally, retrieving specific related information, such as a person’s desk, is more challenging. Making this approach error-prone and cumbersome.
 
-#### ✅ How to Do it:
+#### ✅ How to Do it
 Flattening the data structure simplifies management:
 ```json
 [
   { "desk_id": "desk1", "user_id": "user1", "department": "Sales" },
   { "desk_id": "desk1", "user_id": "user2", "department": "Sales" }
 ]
+```
+
+### 2.5. Consistent API Responses ({data} object)
+We established a convention where every response returns a *{data}* object. This ensures that every API response follows a predictable structure, making it easier to handle responses and reducing the likelihood of unexpected issues.
+
+#### ✅ How to Do it
+```js
+router.get("/:id", async (req, res) => {
+  try {
+    const data = await MissionObject.findOne({ _id: req.params.id });
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
 ```
 
 ## 3. Front-end
@@ -877,7 +894,3 @@ selego-monorepo/
 **Consistent Tooling**: Using the same set of tools across all projects ensures consistency and reduces the learning curve for new team members.
 **Simplified Dependencies**: Managing dependencies is straightforward since all parts of the project are in one place.  
 **Enhanced Code Reuse**: Easier sharing and reuse of code across projects speed up development and reduce duplication.
-
-
-
-
