@@ -242,35 +242,40 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 
 ### 2.4. Flat Data vs Nested Data in MongoDB
 #### ✖️ How to not do it:
-Avoid using a flat structure if it complicates relationships and requires excessive data duplication. For instance:
-
-Flat Data Example (Many objects for each desk 😵‍💫):
+Nesting data in MongoDB can make managing relationships between entities more complex. For example, if you have a desk_id linked to multiple user_ids, storing this as nested data might look like this:
 ```json
-[
-  { "deskId": "desk1", "userId": "user1" },
-  { "deskId": "desk1", "userId": "user2" },
-  { "deskId": "desk1", "userId": "user3" }
-]
+{
+  "desk_id": "desk1",
+  "users": [
+    {
+      "user_id": "user1",
+      "department": "Sales"
+    },
+    {
+      "user_id": "user2",
+      "department": "Sales"
+    }
+  ]
+}
+
 ```
 
 #### ❓ Why to not do this:
-Using a flat structure can make relationship management complex. It can lead to redundant data and inefficient indexing. For instance, if you need to add additional information to the relationship, you might end up duplicating data or creating extra collections, making updates harder and error-prone.
+Nesting can lead to maintenance issues. For instance, if you need to update the department name from "Sales" to "Marketing," you must update it for every user in the nested array. Additionally, retrieving specific related information, such as a person’s desk, is more challenging. Making this approach error-prone and cumbersome.
 
 #### ✅ How to Do it:
-Consider using a nested data structure to simplify management and avoid redundancy:
-
-Nested Data Example (Single object for each desk 😊):
+Flattening the data structure simplifies management:
 ```json
 [
-  { "deskId": "desk1", "users": ["user1", "user2", "user3"] }
+  { "desk_id": "desk1", "user_id": "user1", "department": "Sales" },
+  { "desk_id": "desk1", "user_id": "user2", "department": "Sales" }
 ]
 ```
 
-#### ❓ Why to do this
-Nested data structures simplify updates and avoid redundancy by keeping related data in one place. For example, a single document can include all user assignments for a desk, so you don't repeat the desk information. This approach reduces duplication and avoids the need for extra collections, making it easier to manage and query your data. MongoDB is designed to handle these nested structures efficiently, aligning well with its strengths.
+#### ❓ Why to do this:
+Flattening the data structure simplifies updates by storing each relationship as a separate document. This way, you only need to update the department name in one place. It also makes managing and querying data easier, including quickly retrieving related information like a person’s desk.
 
 Lot of different points can be added, but those are some of the most important, feel free to contribute by adding your personal experience. And last question, I think flat data is great BUT why do we keep using mongo IF we want to flatten everything like that ? What would be the downside of using SQL everywhere ( except for migration that can be tiresome to deal with )
-
 
 ## 3. Front-end
 
