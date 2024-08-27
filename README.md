@@ -272,11 +272,6 @@ Flattening the data structure simplifies management:
 ]
 ```
 
-#### ❓ Why to do this:
-Flattening the data structure simplifies updates by storing each relationship as a separate document. This way, you only need to update the department name in one place. It also makes managing and querying data easier, including quickly retrieving related information like a person’s desk.
-
-Lot of different points can be added, but those are some of the most important, feel free to contribute by adding your personal experience. And last question, I think flat data is great BUT why do we keep using mongo IF we want to flatten everything like that ? What would be the downside of using SQL everywhere ( except for migration that can be tiresome to deal with )
-
 ## 3. Front-end
 
 ### 3.1. Handling API Responses:
