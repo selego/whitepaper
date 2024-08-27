@@ -31,6 +31,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.1 [The Post Search](#21-the-post-search)
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
+   - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -94,7 +95,7 @@ async function onDelete(){
 }
 ```
 
-### 1.1.3 Update After an Action
+### 1.1.3. Update After an Action
 Effective state management is crucial when performing actions like creating, updating, or deleting data. Updating the state directly after these actions helps maintain UI consistency with the server's data.
 
 #### ✖️ How to not do it
@@ -239,6 +240,37 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 
 ```
 
+### 2.4. Flat Data vs Nested Data in MongoDB
+#### ✖️ How to not do it:
+Nesting data in MongoDB can make managing relationships between entities more complex. For example, if you have a desk_id linked to multiple user_ids, storing this as nested data might look like this:
+```json
+{
+  "desk_id": "desk1",
+  "users": [
+    {
+      "user_id": "user1",
+      "department": "Sales"
+    },
+    {
+      "user_id": "user2",
+      "department": "Sales"
+    }
+  ]
+}
+
+```
+
+#### ❓ Why to not do this:
+Nesting can lead to maintenance issues. For instance, if you need to update the department name from "Sales" to "Marketing," you must update it for every user in the nested array. Additionally, retrieving specific related information, such as a person’s desk, is more challenging. Making this approach error-prone and cumbersome.
+
+#### ✅ How to Do it:
+Flattening the data structure simplifies management:
+```json
+[
+  { "desk_id": "desk1", "user_id": "user1", "department": "Sales" },
+  { "desk_id": "desk1", "user_id": "user2", "department": "Sales" }
+]
+```
 
 ## 3. Front-end
 
