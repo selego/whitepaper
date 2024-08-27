@@ -44,6 +44,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 6.2 [Validation?](#62-usage-of-joi-in-early-phases)
    - 6.3 [Uploading Files](#63-how-to-upload-files)
    - 6.4 [Domain Scoping](#64-domain-scoping)
+   - 6.5 [Mono repo](#64-mono-repo)
 
 
 ## 1. Javascript
@@ -839,3 +840,44 @@ app
 Yes, it’s boring to duplicate code, but that prevents a future organizational mess with duplicate business logic everywhere, and nested rendering logic in all components.
 
 [#Reference](https://petesena.medium.com/why-the-way-you-think-about-business-development-is-all-wrong-1d74c58c8628)
+
+### 6.5 Monorepo Approach
+#### ✖️ How to not do it
+Consider the repositories for SELEGO. We have around 200 repositories. If every part of every project had its own repo—such as jobmaker-api, jobmaker-app, and more—you'd be managing at least 600 repositories. Onboarding new team members would require cloning multiple repos, like jobmaker-api and jobmaker-app, and setting up each one separately. Keeping track of everything would be overwhelming and complicated.
+
+#### ✅ How to do it
+**Disclaimer**: At Selego, our monorepo approach involves a single repository for all project components, such as the API and application, without a shared package.json. Each component operates with its own dependencies, ensuring flexibility and tailored project management.
+
+Use a single monorepo to manage all project components, even with separate dependencies. This simplifies code management, bug fixes (with one pull request), and team collaboration, avoiding the complexity of multiple repositories. This approach enhances project management and efficiency, especially for small teams.
+```
+selego-monorepo/
+│
+├── app/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── README.md
+│
+├── admin/
+│   ├── src/
+│   ├── public/
+│   ├── package.json
+│   ├── README.md
+│
+├── api/
+│   ├── src/
+│   ├── package.json
+│   ├── README.md
+│
+└── README.md
+```
+#### ❓ Why to do this
+**Centralized Code Management**: All code is in one repository, making it easier to oversee and manage.
+**Streamlined Collaboration**: A single repository helps the team collaborate more efficiently by working within the same codebase.
+**Consistent Tooling**: Using the same set of tools across all projects ensures consistency and reduces the learning curve for new team members.
+**Simplified Dependencies**: Managing dependencies is straightforward since all parts of the project are in one place.  
+**Enhanced Code Reuse**: Easier sharing and reuse of code across projects speed up development and reduce duplication.
+
+
+
+
