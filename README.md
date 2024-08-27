@@ -32,6 +32,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
    - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
+   - 2.5 [How to Integrate a File Handler Efficiently](#25-how-to-integrate-a-file-handler-efficiently)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -271,6 +272,68 @@ Flattening the data structure simplifies management:
   { "desk_id": "desk1", "user_id": "user2", "department": "Sales" }
 ]
 ```
+
+### 2.5 How to Integrate a File Handler Efficiently
+When starting a new project, uploading files like photos, audio, videos, or documents to a database is common. We often use S3 buckets from CleverCloud for this.
+
+#### ✖️ How to not do it
+Initially, file upload code was duplicated across various endpoints. For example:
+```js
+if (req.body.hasOwnProperty("thumbnail") && req.body.thumbnail.hasOwnProperty("rawBody")) {
+    const base64ContentArray = req.body.thumbnail.rawBody.split(",");
+    const contentType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
+    const extension = req.body.thumbnail.name.split(".").pop();
+    const buffer = Buffer.from(base64ContentArray[1], "base64");
+    var url = await uploadVideoToS3FromBuffer(`thumbnails/${video._id}.${extension}`, buffer, contentType);
+    if (req.body.cropped) await uploadVideoToS3FromBuffer(`cropped/${video._id}.${extension}`, buffer, contentType);
+    video.thumbnail = url.replace(/^https?:\/\//i, "");
+    await video.save();
+}
+```
+
+#### ❓ Why to not do this
+This approach led to lots of code duplication and maintenance and scalability issues.
+
+**Disclaimer**: in our terms, it’s okay to duplicate, especially on experimental things and if you’re trying to go fast. The issue here is that we repeatedly encountered the same code for file handling in nearly every post/put operation, which unmaintainable.
+
+
+#### ✅ How to Do It
+We created a single file handler controller to manage all file uploads. Here’s a simplified example:
+```js
+const express = require("express");
+const router = express.Router();
+const crypto = require("crypto");
+const { uploadToS3FromBuffer } = require("../utils");
+
+router.post("/", async (req, res) => {
+    const { files, folder } = req.body;
+
+    if (!folder) return res.status(400).send({ ok: false, message: "No folder specified" });
+    if (!files) return res.status(400).send({ ok: false, message: "No files uploaded" });
+
+    const filesArray = Array.isArray(files) ? files : [files];
+    const uploadPromises = filesArray.map((file) => {
+        const base64ContentArray = file.rawBody.split(",");
+        const contentType = base64ContentArray[0].match(/[^:\s*]\w+\/[\w-+\d.]+(?=[;| ])/)[0];
+        const extension = file.name.split(".").pop();
+        const buffer = Buffer.from(base64ContentArray[1], "base64");
+        const uuid = crypto.randomBytes(16).toString("hex");
+        return uploadToS3FromBuffer(`file${folder}/${uuid}/${file.name}.${extension}`, buffer, contentType);
+    }).filter(promise => promise !== null);
+
+    try {
+        const urls = await Promise.all(uploadPromises);
+        return res.status(200).send({ ok: true, data: urls });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).send({ ok: false, message: "Error in file upload" });
+    }
+});
+module.exports = router;
+```
+This way, you handle file uploads in one place. Copy this controller into new projects and adjust the S3 keys as needed.
+
+For the frontend, use [this reusable file input component](https://github.com/selego/matteriality/blob/main/app/src/components/file-input.jsx), all you need to do is adjust the styling to match your brand new project
 
 ## 3. Front-end
 
