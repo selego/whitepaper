@@ -265,7 +265,7 @@ Nesting data in MongoDB can make managing relationships between entities more co
 #### ❓ Why to not do this:
 Nesting can lead to maintenance issues. For instance, if you need to update the department name from "Sales" to "Marketing," you must update it for every user in the nested array. Additionally, retrieving specific related information, such as a person’s desk, is more challenging. Making this approach error-prone and cumbersome.
 
-#### ✅ How to Do it
+#### ✅ How to Do it:
 Flattening the data structure simplifies management:
 ```json
 [
