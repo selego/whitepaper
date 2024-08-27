@@ -294,7 +294,7 @@ if (req.body.hasOwnProperty("thumbnail") && req.body.thumbnail.hasOwnProperty("r
 #### ❓ Why to not do this
 This approach led to lots of code duplication and maintenance and scalability issues.
 
-**Disclaimer**: in our terms, it’s okay to duplicate, especially on experimental things and if you’re trying to go fast. The issue here is that we repeatedly encountered the same code for file handling in nearly every post/put operation, which unmaintainable.
+**Disclaimer**: in our terms, it’s okay to duplicate, especially on experimental things and if you’re trying to go fast. The issue here is that we repeatedly encountered the same code for file handling in nearly every post/put operation, which is unmaintainable.
 
 
 #### ✅ How to Do It
