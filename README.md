@@ -45,7 +45,8 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 6.2 [Validation?](#62-usage-of-joi-in-early-phases)
    - 6.3 [Uploading Files](#63-how-to-upload-files)
    - 6.4 [Domain Scoping](#64-domain-scoping)
-   - 6.5 [Mono repo](#64-mono-repo)
+   - 6.5 [Mono repo](#65-monorepo-approach)
+   - 6.6 [Best Practices for Starting a Project](#66-best-practices-for-starting-a-project)
 
 
 ## 1. Javascript
@@ -894,3 +895,13 @@ selego-monorepo/
 **Consistent Tooling**: Using the same set of tools across all projects ensures consistency and reduces the learning curve for new team members.
 **Simplified Dependencies**: Managing dependencies is straightforward since all parts of the project are in one place.  
 **Enhanced Code Reuse**: Easier sharing and reuse of code across projects speed up development and reduce duplication.
+
+### 6.6 Best Practices for Starting a Project
+#### ✅ How to do it
+When starting a new project, prioritize speed and simplicity:
+Hardcode credentials like email and password directly in the login screen to enable quick access for anyone. It’s acceptable to use .env files and push them to GitHub at this early stage, as security is not a primary concern yet
+
+```js
+const match = config.ENVIRONMENT === "development" || (await user.comparePassword(password));
+if (!match) return res.status(401).send({ ok: false, code: EMAIL_OR_PASSWORD_INVALID });
+```
