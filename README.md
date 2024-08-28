@@ -28,6 +28,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
      - 1.2.2 [Update values](#122-update-values)
+     - 1.2.3 [Abstractions: To Abstract or Not to Abstract?](#123-abstractions-to-abstract-or-not-to-abstract)
    - 1.3 [KIS: Keep it Simple](#13-kis-keep-it-simple)
      - 1.3.1 [What is KIS](#131-what-is-kis)
      - 1.3.2 [What is not KIS](#111-early-returns)
@@ -218,6 +219,60 @@ router.get("/:id", passport.authenticate(["user"], { session: false }), async (r
 });
 ```
 [Here](https://www.imperva.com/learn/application-security/nosql-injection/) you can find an article that explain what can be done if you don’t
+
+### 1.2.3 Abstractions: To Abstract or Not to Abstract?
+
+Abstractions are like that tricky magic trick: you do it when you don’t want to repeat yourself (DRY - Don’t Repeat Yourself). The DRY principle suggests that if you’re writing the same code twice, you should abstract it. 🛑 But hold up! Before you jump into abstraction, let’s weigh the pros and cons.
+
+#### ✅ Pros of Abstraction:
+- **Centralized Code:** Easier to maintain since all related code lives in one spot.
+- **Hidden Complexity:** Sometimes you don’t need to know how something works, just that it works. Like using `getBoundingClientRect()`—you don’t care how it calculates, you just want the result.
+- **Consistency:** Abstracting critical functions reduces the risk of bugs—no need to update the same logic in multiple places.
+
+#### ✖️ Cons of Abstraction:
+- **Readability:** It’s often easier to understand code when you can see it all in one place, without jumping between files.
+- **Pain for Newcomers:** Abstracting simple tasks can make life harder for those new to the codebase.
+
+#### Conclusion:
+If you’re hesitating about whether to abstract something… you probably shouldn’t. At least, not yet.
+
+#### ❌ Bad Abstraction Example: CRUD Operations
+
+Abstraction gone wrong often looks like this:
+
+Instead of writing:
+
+```javascript
+const {ok, data, error} = await API.get({ path: '/action' });
+if (!ok) return alert(error);
+setActions(data);
+```
+
+You might be tempted to abstract it:
+
+```javascript
+const getActions = () => API.get({ path: '/action' });
+
+// Later in your code
+const actions = await getActions();
+setActions(actions.data);
+```
+
+**Why this is bad:**
+- **Harder to Debug:** It’s not immediately clear what’s happening behind `getActions()`.
+- **Unnecessary Complexity:** This abstraction doesn’t simplify anything, and it makes the flow harder to follow.
+
+#### Real-Life Example
+
+**Case:** In a project like Mano, where data is encrypted end-to-end, some backend tasks like creating update records happen on the front-end. The code is shared between a web dashboard and an Android app, and they share some code.
+
+- **Pro Abstraction:** Shared code means less maintenance.
+- **Con Abstraction:** It complicates the codebase and makes it harder for newcomers to understand.
+
+**Decision:** In this scenario, they chose not to abstract the CRUD operations and updates. The reasoning? The code doesn’t change often, and it’s easier to read without abstraction.
+
+#### ✨ Takeaway:
+Abstraction is a powerful tool, but it’s not always the right answer. Think before you abstract — Remember [Keep it Simple 😉](#13-kis-keep-it-simple).
 
 ### 1.3 KIS: Keep it Simple
 ### 1.3.1 What is KIS
