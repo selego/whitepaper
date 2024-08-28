@@ -50,6 +50,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 6.4 [Domain Scoping](#64-domain-scoping)
    - 6.5 [Mono repo](#65-monorepo-approach)
    - 6.6 [Best Practices for Starting a Project](#66-best-practices-for-starting-a-project)
+   - 6.7 [Service Code Approaches](#67-service-code-approaches)
 
 
 ## 1. Javascript
@@ -1067,3 +1068,153 @@ Hardcode credentials like email and password directly in the login screen to ena
 const match = config.ENVIRONMENT === "development" || (await user.comparePassword(password));
 if (!match) return res.status(401).send({ ok: false, code: EMAIL_OR_PASSWORD_INVALID });
 ```
+
+### 6.7 Service Code Approaches
+Services are another important part for our projects. Every project has a folder that contains services that are crucial for code reuse across projects. They handle interactions with external APIs, like Brevo or Webflow, and should be designed to be modular and reusable. However, developers sometimes mix business logic into service code, which can lead to confusion.
+
+Here's an example of a "Webflow" service:
+#### ✖️ How to Not Do It
+In this approach, the service code includes specific business logic and nested functions, making it less modular and harder to reuse across different projects:
+
+```js
+const { WEBFLOW_TOKEN, ENVIRONMENT } = require("../config");
+
+const sendRequest = async (path, method, data) => {
+  try {
+    const url = `https://api.webflow.com/v2${path}`;
+
+    const headers = {
+      Authorization: `Bearer ${WEBFLOW_TOKEN}`,
+      "accept-version": "1.0.0",
+    };
+
+    if (method === "post" || method === "put" || method === "patch") {
+      headers["Content-Type"] = "application/json";
+    }
+
+    const response = await axios({ method, url, headers, data, validateStatus: () => true });
+
+    if (response.data && response.data.message) return { ok: false, errorData: response.data };
+
+    return { ok: true, data: response.data };
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+};
+
+async function get(path, params = null) {
+  let fullPath = path;
+
+  if (params) {
+    const cleanedParams = Object.fromEntries(Object.entries(params).filter(([_, value]) => value !== undefined));
+    fullPath += "?" + new URLSearchParams(cleanedParams);
+  }
+
+  return await sendRequest(fullPath, "get");
+}
+
+async function post(path, body = null) {
+  return await sendRequest(path, "post", body);
+}
+
+async function put(path, body = null) {
+  return await sendRequest(path, "put", body);
+}
+
+async function patch(path, body = null) {
+  return await sendRequest(path, "patch", body);
+}
+
+async function remove(path) {
+  return await sendRequest(path, "delete");
+}
+
+async function listSites() {
+  try {
+    const response = await get(`/sites`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching list of sites:", error);
+    return { ok: false, errorData: error };
+  }
+}
+
+async function getSite(id) {
+  try {
+    const response = await get(`/sites/${id}`);
+    return response;
+  } catch (error) {
+    console.error("Error fetching site:", error);
+    return { ok: false, errorData: error };
+  }
+}
+```
+
+#### ✅ How to Do It
+In this approach, the service code is more modular and reusable, focusing only on core service functionality:
+
+```js
+const fetch = require('node-fetch');
+const { URLSearchParams } = require("url");
+const { WEBFLOW_TOKEN } = require("../config");
+
+// https://developers.webflow.com/data/reference/rest-introduction
+
+class Api {
+  constructor() {
+    this.token = WEBFLOW_TOKEN;
+  }
+
+  async sendRequest(path, method, body) {
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
+      const url = `https://api.webflow.com/v2${path}`;
+      const headers = {
+        Authorization: `Bearer ${this.token}`,
+        "accept-version": "1.0.0",
+        "Content-Type": method === "post" || method === "put" || method === "patch" ? "application/json" : undefined
+      };
+
+      const options = { method, headers, body: body ? JSON.stringify(body) : null };
+      const response = await fetch(url, options);
+      const result = await response.json();
+
+      return result;
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  }
+
+  async get(path, params = null) {
+    let fullPath = path;
+    if (params) fullPath += "?" + new URLSearchParams(params);
+    return await this.sendRequest(fullPath, "get");
+  }
+
+  async post(path, body = null) {
+    return await this.sendRequest(path, "post", body);
+  }
+
+  async put(path, body = null) {
+    return await this.sendRequest(path, "put", body);
+  }
+
+  async patch(path, body = null) {
+    return await this.sendRequest(path, "patch", body);
+  }
+
+  async remove(path) {
+    return await this.sendRequest(path, "delete");
+  }
+}
+
+const api = new Api();
+```
+#### ❓ Why to Do This
+- **Modularity**: The second approach encapsulates service-related functionality within a single Api class, making the code more modular and easier to maintain.
+- **Reusability**: By focusing on core service methods and avoiding project-specific logic, the service code is more reusable across different projects.
+- **Clarity**: The code is cleaner and more focused, with business logic separated from service functions, enhancing readability and maintainability.
+- **Simplified Management**: Managing and extending the service is simpler because changes are confined to a single class, avoiding scattered functions and business-specific code.
