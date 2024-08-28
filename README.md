@@ -294,36 +294,80 @@ router.get("/dataRoom/:id", passport.authenticate(["user"], { session: false }),
 ```
 
 ### 2.4. Flat Data vs Nested Data in MongoDB
-#### ✖️ How to not do it:
-Nesting data in MongoDB can make managing relationships between entities more complex. For example, if you have a desk_id linked to multiple user_ids, storing this as nested data might look like this:
-```json
+Imagine you have a task object and user object, a user can create a task and users (others) can apply to it. You can approach it with either a flat or nested structure. Here’s a comparison of both methods:
+
+#### Nested Data Approach:
+- Nested Data Structure:
+```js
 {
-  "desk_id": "desk1",
-  "users": [
-    {
-      "user_id": "user1",
-      "department": "Sales"
-    },
-    {
-      "user_id": "user2",
-      "department": "Sales"
-    }
-  ]
+   name: String, 
+   created_by_user_id: Object.id,
+   applicant_users_ids: [Object.id]
 }
-
 ```
 
-#### ❓ Why to not do this:
-Nesting can lead to maintenance issues. For instance, if you need to update the department name from "Sales" to "Marketing," you must update it for every user in the nested array. Additionally, retrieving specific related information, such as a person’s desk, is more challenging. Making this approach error-prone and cumbersome.
-
-#### ✅ How to Do it:
-Flattening the data structure simplifies management:
-```json
-[
-  { "desk_id": "desk1", "user_id": "user1", "department": "Sales" },
-  { "desk_id": "desk1", "user_id": "user2", "department": "Sales" }
-]
+- Getting Data:
+```js
+router.get("/:id", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    const task = await TaskModel.findOne({ _id: req.params.id });
+    const createdByUser = await UserModel.findById(task.created_by_user_id);
+    const applicantUsers = await UserModel.find({ _id: { $in: task.applicant_users_ids } });
+    const data = { ...task._doc, createdByUser, applicantUsers };
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
 ```
+- **Pros & Cons:**
+  - **(medium impact)** Every property of the user will be returned.
+  - **(medium impact)** It’s challenging to use tools like Sendinblue or Metabase.
+  - **(low impact)** The data remains synchronized with the user. If you update the user’s name, it’s updated everywhere.
+  - **(low impact)** Retrieving objects is slightly slower.
+  - **(high impact)** It increases the complexity of the code.
+
+#### Flat Data Approach:
+- Flat Data Structure:
+```js
+{
+   name: String, 
+   created_by_user_id: String,
+   created_by_user_name: String,
+   created_by_user_avatar: String,
+   applicant_users: [
+       id: String,
+       name: String,
+       avatar: String
+   ]
+}
+```
+
+- Getting Data (Flat Approach):
+```js
+router.get("/:id", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    const data = await TaskModel.findOne({ _id: req.params.id });
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+```
+- **Pros & Cons:**
+  - **(high impact)** It decreases the complexity of the code.
+  - **(medium impact)** Adding new properties to the user’s object can be tedious.
+  - **(medium impact)** It’s easy to integrate with tools like Sendinblue or Metabase.
+  - **(low impact)** The data is unsynchronized with the user, meaning the user’s name can only be changed through a script manually.
+  - **(low impact)** Retrieving objects is faster.
+
+#### Summary:
+Flat structures offer simplicity and speed, making them easier to manage and faster to work with. However, they require careful management to keep data synchronized and consistent. On the other hand, nested structures are ideal when you need to maintain strong data consistency across the system but come with increased complexity
+
+
+
 
 ### 2.5. Consistent API Responses ({data} object)
 We established a convention where every response returns a *{data}* object. This ensures that every API response follows a predictable structure, making it easier to handle responses and reducing the likelihood of unexpected issues.
