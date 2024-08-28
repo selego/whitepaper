@@ -300,8 +300,8 @@ Imagine you have a task object and user object, a user can create a task and use
 ```js
 {
    name: String, 
-   createdByUser: Object.id,
-   applicantUsers: [Object.id]
+   created_by_user_id: Object.id,
+   applicant_users_ids: [Object.id]
 }
 ```
 
@@ -310,8 +310,8 @@ Imagine you have a task object and user object, a user can create a task and use
 router.get("/:id", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
   try {
     const task = await TaskModel.findOne({ _id: req.params.id });
-    const createdByUser = await UserModel.findById(task.createdByUserId);
-    const applicantUsers = await UserModel.find({ _id: { $in: task.applicantUserIds } });
+    const createdByUser = await UserModel.findById(task.created_by_user_id);
+    const applicantUsers = await UserModel.find({ _id: { $in: task.applicant_users_ids } });
     const data = { ...task._doc, createdByUser, applicantUsers };
     return res.status(200).send({ ok: true, data });
   } catch (error) {
@@ -332,10 +332,10 @@ router.get("/:id", passport.authenticate(["admin", "user"], { session: false }),
 ```js
 {
    name: String, 
-   createdByUserId: String,
-   createdByUserName: String,
-   createdByUserAvatar: String,
-   applicantUsers: [
+   created_by_user_id: String,
+   created_by_user_name: String,
+   created_by_user_avatar: String,
+   applicant_users: [
        id: String,
        name: String,
        avatar: String
