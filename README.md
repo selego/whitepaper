@@ -28,6 +28,10 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
      - 1.2.2 [Update values](#122-update-values)
+   - 1.3 [KIS: Keep it Simple](#13-kis-keep-it-simple)
+     - 1.3.1 [What is KIS](#131-what-is-kis)
+     - 1.3.2 [What is not KIS](#111-early-returns)
+     - 1.3.3 [Why KIS](#133-why-kis)
 2. [Back-end](#2-back-end)
    - 2.1 [The Post Search](#21-the-post-search)
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
@@ -215,6 +219,106 @@ router.get("/:id", passport.authenticate(["user"], { session: false }), async (r
 ```
 [Here](https://www.imperva.com/learn/application-security/nosql-injection/) you can find an article that explain what can be done if you don’t
 
+### 1.3 KIS: Keep it Simple
+### 1.3.1 What is KIS
+If you have an hour to solve a problem, spend 55 minutes thinking about it and 5 minutes on the solution. It's essential to consider various technical solutions before coding. Choose the simplest one, as it can save time, reduce costs, and make it easier for others to contribute especially for junior devs.
+
+#### ✖️ How to not do it:
+```js
+import React, { useReducer, useMemo, useCallback } from 'react';
+
+// Actions
+const INCREMENT = 'INCREMENT';
+
+// Reducer Function
+const counterReducer = (state, action) => {
+  switch (action.type) {
+    case INCREMENT:
+      return { count: state.count + 1 };
+    default:
+      throw new Error('Unknown action type');
+  }
+};
+
+// Complex Counter Component
+const ComplexCounter = () => {
+  const [state, dispatch] = useReducer(counterReducer, { count: 0 });
+
+  const increment = useCallback(() => dispatch({ type: INCREMENT }), []);
+  const memoizedCount = useMemo(() => state.count, [state.count]);
+
+  useEffect(() => {
+    document.title = `Count: ${memoizedCount}`;
+  }, [memoizedCount]);
+
+  return (
+    <div>
+      <h1>Count: {memoizedCount}</h1>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+};
+
+export default ComplexCounter;
+```
+"As a junior dev, if I saw this code, I'd probably 🏃‍♂️ run away and never look back! 😅"
+
+#### ✅ How to Do it
+```js
+import React, { useState } from 'react';
+
+// Simple Counter Component
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  const increment = () => setCount(count + 1);
+
+  return (
+    <div>
+      <h1>Count: {count}</h1>
+      <button onClick={increment}>Increment</button>
+    </div>
+  );
+};
+
+export default Counter;
+```
+Other Examples of Keeping It Simple:
+- **Use One Environment**: Stick with a single environment (e.g., production) as long as possible to avoid unnecessary complexity.
+- **Stick with Basic Hooks**: Use useState and useEffect for most of your React needs. Avoid advanced hooks like useMemo and useReducer unless absolutely necessary.
+- **Push Your Environment**: While not ideal for open-source projects, pushing your environment configurations can save time.
+- **Security in Backlog**: Don’t focus on security from day one. Add it to the backlog and address it later.
+
+
+### 1.3.2 What is not KIS
+Keep it Simple does not mean making your code dirty. Simple code can be clean, readable, maintainable, and scalable. It’s about delivering "good enough" solutions quickly rather than aiming for perfection from the start.
+
+#### 🔑 Key Points:
+- **Simple ≠ Dirty**: Simple code should still be clean and well-structured.
+- **Good Enough**: Sometimes implementing 60%-80% of a feature is sufficient.
+- **Simple ≠ Easy**: Simple solutions might still be hard to implement.
+
+### 1.3.3 Why KIS?
+Keeping things simple helps us quickly develop MVPs (Minimum Viable Products), tailor them to user needs, and find Product-Market Fit (PMF) faster.
+
+#### Reasons to Keep It Simple:
+- **Speed**: Roll out products quickly (e.g., within 2 weeks).
+- **Cost-Efficiency**: Avoid wasting money and time by not over-engineering solutions.
+- **Adaptability**: Allows for pivots and changes without significant rework.
+
+#### Traps to Avoid:
+- **Quick but Dirty**: Avoid rushing tasks in a way that leads to technical debt and loss of credibility.
+- **Identify Priorities**: Focus on critical parts of the application to ensure they are simple and scalable.
+- **Avoid Over-Engineering**: Don’t add unnecessary features or complexity that may never be used.
+
+#### Tips:
+- **Stuck on a Task?**: If you’re working on something for over 30 minutes with no progress, reassess or ask for help.
+- **Issue with a Feature**?: Look for existing solutions or get a second opinion on your approach.
+
+#### Example:
+A project rushed without considering user experience or code quality can lead to significant rework, wasting time and resources. Aim for a balance between speed and quality.
+
+By focusing on these principles, you ensure that your solutions are both effective and maintainable.
 
 
 ## 2. Back-end
