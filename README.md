@@ -25,6 +25,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
      - 1.1.1 [Early Returns](#111-early-returns)
      - 1.1.2 [Easy Confirmation](#112-easy-confirmation)
      - 1.1.3 [Update After an Action](#113-update-after-an-action)
+     - 1.1.4 [Make It Easy for Others](#114-make-it-easy-for-others)
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
      - 1.2.2 [Update values](#122-update-values)
@@ -141,11 +142,11 @@ async function handleDelete(id) {
 - **Consistency**: Ensures that the application state is always in sync with the server.
 - **Maintainability**: Reduces the risk of bugs and simplifies future updates.
 
-### 🛠️ Make It Easy for Others
+### 1.1.4 Make It Easy for Others
 
 In a team setting, where multiple developers frequently jump in and out of projects, it's crucial to write code that's easy for others to understand. Every small detail can either boost collaboration or slow it down.
 
-#### ✖️ How to not do it:
+#### ✖️ How to not do it
 ```javascript
 const getOrdersToPrepare = async (req) => {
   return new Promise((resolve, reject) => {
@@ -166,7 +167,7 @@ const getOrdersToPrepare = async (req) => {
   - **Logic Flow**: The function is complex and mixes concerns (e.g., dealing with requests, dates, and Odoo connection) without clear separation, making it harder to follow.
   - **Date Handling**: The logic for handling dates is embedded within the function, which complicates the overall readability.
 
-#### ✅ How to Do it:
+#### ✅ How to Do it
 ```javascript
 const getOrdersToPrepareByDate = async (date = null) => {
   return new Promise((resolve, reject) => {
