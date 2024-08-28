@@ -50,7 +50,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 6.4 [Domain Scoping](#64-domain-scoping)
    - 6.5 [Mono repo](#65-monorepo-approach)
    - 6.6 [Best Practices for Starting a Project](#66-best-practices-for-starting-a-project)
-   - 6.7 [Service Code Approaches](#66-best-practices-for-starting-a-project)
+   - 6.7 [Service Code Approaches](#67-service-code-approaches)
 
 
 ## 1. Javascript
