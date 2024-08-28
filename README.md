@@ -220,7 +220,7 @@ router.get("/:id", passport.authenticate(["user"], { session: false }), async (r
 
 ### 1.3 KIS: Keep it Simple
 ### 1.3.1 What is KIS
-If you have an hour to solve a problem, spend 55 minutes thinking about it and 5 minutes on the solution. It's essential to consider various technical solutions before coding. Choose the simplest one, as it can save time, reduce costs, and make it easier for others to contribute especially junior devsspe.
+If you have an hour to solve a problem, spend 55 minutes thinking about it and 5 minutes on the solution. It's essential to consider various technical solutions before coding. Choose the simplest one, as it can save time, reduce costs, and make it easier for others to contribute especially for junior devs.
 
 #### ✖️ How to not do it:
 ```js
