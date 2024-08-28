@@ -34,6 +34,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
    - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
    - 2.5 [Consistent API Responses ({data} object)](#25-consistent-api-responses-data-object)
+   - 2.6 [Error Management Best Practices](#26-error-management-best-practices)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -339,6 +340,19 @@ router.get("/:id", async (req, res) => {
   }
 });
 ```
+### 2.6 Error Management Best Practices
+#### ✖️ How to Not Do It:
+Using plain text error messages in responses:
+```js
+if (!name) return res.status(409).send({ ok: false, error: "name missing" });
+```
+#### ✅ How to Do It:
+Use standardized error codes or constants:
+```js
+if (!name) return res.status(409).send({ ok: false, error: "NAME_MISSING" });
+```
+#### ❓ Why to Do This:
+Using standardized error codes like *"NAME_MISSING"* simplifies later tasks such as translation and code detection.
 ## 3. Front-end
 
 ### 3.1. Handling API Responses:
