@@ -39,6 +39,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 3.2 [Separating Concerns](#32-separating-concerns)
    - 3.3 [Avoid Partial Data Extraction](#33-avoid-partial-data-extraction)
    - 3.4 [Component Scoping](#34-component-scoping)
+   - 3.5 [Streamlining API Calls](#35-streamlining-api-calls)
 4. [DevOps](#4-devops)
 5. [NoCode](#5-nocode)
 6. [Project](#6-project)
@@ -652,6 +653,59 @@ const BindAccount = () => {
 };
 ```
 By refactoring your code this way, each feature is neatly scoped into its own component, making your codebase cleaner, more maintainable, and less prone to bugs as your application evolves.
+
+### 3.5 Streamlining API Calls
+#### ✖️ How to not do it:
+You might see a separate business function for each API call in some projects, like this:
+
+```js
+export async function getCashbackSites(referralCode) {
+  const response = await fetch('https://myproject.com/campaigns/extension/' + referralCode, {
+    method: 'GET',
+    headers: { 'language': 'fr_fr' },
+  });
+  if (response.status == 401) return null;
+  const data = await response.json();
+  return data.data;
+}
+
+export async function getReferral(code) {
+  const response = await fetch('https://myproject.com/campaigns/referral/' + code, {
+    method: 'GET',
+    headers: { 'language': 'fr_fr' },
+  });
+  if (response.status == 401) return null;
+  const data = await response.json();
+  return data.data;
+}
+```
+#### ❓ Why to not do this:
+This approach can lead to a multiplication of functions, each doing a similar task but for different endpoints. Over time, this can make the codebase harder to manage and understand. When calling a function like getCashbackSites, you may not know exactly what it’s doing without digging into the implementation. This creates unnecessary complexity and an extra layer of abstraction that doesn't add real value.
+
+#### ✅ How to do it:
+Instead, we need to remove this abstraction level as much as possible and directly use our clean routes.
+This way, business is on the proper page and api is just a service without business inside
+
+```js
+class ApiService {
+  async get(path) {
+    try {
+      const response = await fetch(`${apiURL}${path}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json', Authorization: `JWT ${this.token}` },
+      });
+      return await response.json();
+    } catch (error) {
+      throw error;
+    }
+  }
+}
+```
+
+Use it directly like this:
+```js
+get(`/affiliates/campaigns/extension/${referralCode}`);
+```
 
 ## 4. DevOps
 
