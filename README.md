@@ -141,6 +141,50 @@ async function handleDelete(id) {
 - **Consistency**: Ensures that the application state is always in sync with the server.
 - **Maintainability**: Reduces the risk of bugs and simplifies future updates.
 
+### 🛠️ Make It Easy for Others
+
+In a team setting, where multiple developers frequently jump in and out of projects, it's crucial to write code that's easy for others to understand. Every small detail can either boost collaboration or slow it down.
+
+#### ✖️ How to not do it:
+```javascript
+const getOrdersToPrepare = async (req) => {
+  return new Promise((resolve, reject) => {
+    odoo.connect(async function (err) {
+      if (err) return console.log(err);
+      let params = [];
+      let date = getPreviousDay();
+      let nextDay = getNextDay();
+      if (req.query.date) date = req.query.date;
+      params.push([[["commitment_date", ">=", getTodayDay()], ["commitment_date", "<", nextDay]]]);
+    });
+  });
+};
+```
+- **Let's Break It Down:**
+  - **Function Name (`getOrdersToPrepare`)**: Vague and doesn't fully convey the function's purpose.
+  - **Parameter (`req`)**: Suggests that the function is tightly coupled with a request object, which may not always be necessary.
+  - **Logic Flow**: The function is complex and mixes concerns (e.g., dealing with requests, dates, and Odoo connection) without clear separation, making it harder to follow.
+  - **Date Handling**: The logic for handling dates is embedded within the function, which complicates the overall readability.
+
+#### ✅ How to Do it:
+```javascript
+const getOrdersToPrepareByDate = async (date = null) => {
+  return new Promise((resolve, reject) => {
+    odoo.connect(async function (err) {
+      if (err) return console.log(err);
+      let params = [];
+      let selectedDate = date ? date : getPreviousDay();
+      let nextDay = getNextDay();
+      params.push([[["commitment_date", ">=", selectedDate], ["commitment_date", "<", nextDay]]]);
+    });
+  });
+};
+```
+- **Let's Break It Down:**
+  - **Function Name (`getOrdersToPrepareByDate`)**: Clear and descriptive, indicating that the function prepares orders based on a specific date.
+  - **Parameter (`date`)**: Explicitly handles date input, making the function easier to understand and more flexible.
+  - **Date Handling (`selectedDate`)**: The handling of the date is clearer and more straightforward, improving readability and maintainability.
+
 ### 1.2. Beginner Mistakes we see way to often
 
 ### 1.2.1 Filters in the frontend
