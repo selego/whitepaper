@@ -700,12 +700,15 @@ class ApiService {
     }
   }
 }
+const api = new ApiService();
 ```
 
 Use it directly like this:
 ```js
-get(`/affiliates/campaigns/extension/${referralCode}`);
+api.get(`/affiliates/campaigns/extension/${referralCode}`);
 ```
+For further guidance, check out the **complexity tutorial**.
+
 
 ## 4. DevOps
 
