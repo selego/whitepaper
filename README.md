@@ -243,9 +243,9 @@ Abstraction gone wrong often looks like this:
 Instead of writing:
 
 ```javascript
-const response = await API.get({ path: '/action' });
-if (!response.ok) alert(response.error);
-setActions(response.data);
+const {ok, data, error} = await API.get({ path: '/action' });
+if (!ok) return alert(error);
+setActions(data);
 ```
 
 You might be tempted to abstract it:
