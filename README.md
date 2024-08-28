@@ -1070,7 +1070,7 @@ if (!match) return res.status(401).send({ ok: false, code: EMAIL_OR_PASSWORD_INV
 ```
 
 ### 6.7 Service Code Approaches
-Services are crucial for code reuse across projects. They handle interactions with external APIs, like Brevo or Webflow, and should be designed to be modular and reusable. However, developers sometimes mix business logic into service code, which can lead to confusion.
+Services are another important part for our projects. Every project has a folder that contains services that are crucial for code reuse across projects. They handle interactions with external APIs, like Brevo or Webflow, and should be designed to be modular and reusable. However, developers sometimes mix business logic into service code, which can lead to confusion.
 
 Here's an example of a "Webflow" service:
 #### ✖️ How to Not Do It
