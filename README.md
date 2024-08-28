@@ -33,6 +33,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.3 [Consistency in Route Naming](#23-consistency-in-route-naming)
    - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
    - 2.5 [Consistent API Responses ({data} object)](#25-consistent-api-responses-data-object)
+   - 2.6 [Update values](#26-update-values)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -290,6 +291,52 @@ router.get("/:id", async (req, res) => {
   }
 });
 ```
+### 2.6 Update Values
+### ✖️ How to Not Do It
+```javascript
+const language = window.localStorage.getItem("i18nextLng");
+await api.post("/api/users/language", { language });
+```
+```js
+router.put("/:id", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    const data = await Company.findOneAndUpdate({ _id: req.params.id }, req.body);
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+```
+
+### ❓ Why to Not Do This
+- **Incorrect Method for Updates**: POST should be used for creating new resources, not for updating existing ones. PUT is more appropriate for updating specific values.
+- **Route Multiplication**: Creating a specific route for updating a field can lead to route Multiplication and is less scalable.
+- **Security Issue**: Directly injecting the body for updates can expose your application to security vulnerabilities, allowing unintended modifications.
+### ✅ How to Do It
+Update values correctly using the appropriate HTTP method. Instead of using POST for updates, use PUT to modify a specific resource:
+```javascript
+const language = window.localStorage.getItem("i18nextLng");
+await api.put(`/api/users/${id}`, { language });
+```
+Add logical controls to ensure security. For example, to fetch only the object within the user’s organization, use this approach:
+```javascript
+router.get("/:id", passport.authenticate(["user"], { session: false }), async (req, res) => {
+  try {
+    const query = {
+      organisationId: req.user.organisationId,
+      _id: req.params.id
+    };
+
+    const data = await MissionObject.findOne(query);
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+```
+[Here](https://www.imperva.com/learn/application-security/nosql-injection/) you can find an article that explain what can be done if you don’t
 
 ## 3. Front-end
 
