@@ -59,6 +59,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 6.5 [Mono repo](#65-monorepo-approach)
    - 6.6 [Best Practices for Starting a Project](#66-best-practices-for-starting-a-project)
    - 6.7 [Service Code Approaches](#67-service-code-approaches)
+   - 6.7 [Create Small PRs](#68-create-small-prs)
 
 
 ## 1. Javascript
@@ -1735,3 +1736,83 @@ const api = new Api();
 - **Reusability**: By focusing on core service methods and avoiding project-specific logic, the service code is more reusable across different projects.
 - **Clarity**: The code is cleaner and more focused, with business logic separated from service functions, enhancing readability and maintainability.
 - **Simplified Management**: Managing and extending the service is simpler because changes are confined to a single class, avoiding scattered functions and business-specific code.
+
+### 6.8 Create Small PRs
+
+In our project, we follow the **GitHub Flow** model, which means the `main` branch should always be in a deployable state. It’s our source of truth, and everything we do revolves around ensuring it remains clean, stable, and ready for production.
+
+#### Why Small PRs Matter:
+
+1. **Faster Reviews**: Small PRs are quicker to review, making it easier for your team to understand the changes.
+2. **Easier Deployments**: With smaller changes, deployments are smoother and faster, reducing the risk of introducing bugs.
+3. **Frequent Releases**: By keeping your PRs small, you can release updates more frequently, which keeps your project moving forward.
+
+#### ✖️ How Not to Do It:
+Imagine you’re working on two different features: user authentication and task application. ⚠️ You might think it’s fast and efficient to bundle both into one PR, thinking it's the logical next step and that you’re killing two birds with one stone. ⛔ Wrong! This will only lead to confusion and delays.
+
+PR with mixed features: 
+```javascript
+// User authentication function
+const authenticateUser = async (username, password) => {
+  try {
+    const { ok, data } = await api.post('/login', { username, password });
+    if (!ok) return;
+    setUser(data);
+  } catch (error) {
+    console.error('Authentication failed:', error);
+  }
+};
+
+// User applying to a task
+const applyToTask = async (taskId, userId) => {
+  try {
+    const { ok } = await api.post(`/tasks/${taskId}/apply`, { userId });
+    if (!ok) return;
+    fetchTasks(); // Update State/UI
+  } catch (error) {
+    console.error('Task application failed:', error);
+  }
+};
+```
+
+#### ❓ Why to not do this
+- The PR becomes confusing and hard to review since it’s dealing with unrelated areas of the codebase.
+- If one part of the PR is problematic, it could delay the release of the other feature and this will slow everything down (We lose money 💸).
+- Testing becomes more complex, increasing the risk of bugs.
+
+#### ✅ How to Do It:
+Now, let’s split these into two separate PRs.
+
+**PR 1: Authentication System**
+```javascript
+const authenticateUser = async (username, password) => {
+  try {
+    const { ok, data } = await api.post('/login', { username, password });
+    if (!ok) return;
+    setUser(data);
+  } catch (error) {
+    console.error('Authentication failed:', error);
+  }
+};
+```
+
+**PR for User Applying to a Task:**
+```javascript
+const applyToTask = async (taskId, userId) => {
+  try {
+    const { ok } = await api.post(`/tasks/${taskId}/apply`, { userId });
+    if (!ok) return;
+    fetchTasks(); // Update State/UI
+  } catch (error) {
+    console.error('Task application failed:', error);
+  }
+};
+```
+
+#### ❓ Why to do this
+- Each PR is focused on a single feature, making it easier to review and understand.
+- You can deploy the authentication system without waiting for unrelated features to be finalized.
+- If any issues arise, it’s easier to pinpoint the problem.
+
+#### Conclusion:
+Keep your PRs small, focused, and relevant to a single feature or subject. This practice not only improves the quality of the code but also streamlines the development process, making your team more efficient and your project more reliable.
