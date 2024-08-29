@@ -34,6 +34,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
      - 1.3.1 [What is KIS](#131-what-is-kis)
      - 1.3.2 [What is not KIS](#111-early-returns)
      - 1.3.3 [Why KIS](#133-why-kis)
+   - 1.4 [Complexity](#14-complexity)
 2. [Back-end](#2-back-end)
    - 2.1 [The Post Search](#21-the-post-search)
    - 2.2 [Respect 1 Post Route, 1 Object Created](#22-respect-1-post-route-1-object-created)
@@ -419,6 +420,243 @@ Keeping things simple helps us quickly develop MVPs (Minimum Viable Products), t
 A project rushed without considering user experience or code quality can lead to significant rework, wasting time and resources. Aim for a balance between speed and quality.
 
 By focusing on these principles, you ensure that your solutions are both effective and maintainable.
+
+
+### 1.4 Complexity  
+When diving into the codebase of any project, there are certain 🚩 red flags—symptoms of complexity and technical debt—that you should be aware of. These symptoms indicate that the project might be more complex than it needs to be, and addressing them early can save a lot of headaches later on.
+
+I'm going to introduce you to the three main symptoms of complexity and technical debt. After learning about them, you will start noticing them while working on a project. They're signs that the project you're working on is likely complex, and it's crucial to find a way to address them.
+
+#### Symptom 1: The Unknown Unknowns  
+The "Unknown Unknowns" are those pesky, unforeseen problems that pop up when you least expect them. These are the issues you didn’t see coming, and they can throw a wrench in your project if not handled properly.
+
+##### ✖️ How Not to Do It  
+1. Here’s what happens when you don’t anticipate the unknowns:
+```js
+const fetchData = async () => {
+  const { data } = await api.get("/someEndpoint");
+  setData(data);
+};
+```
+- **What's wrong?** If something goes wrong during the API call, you won’t even know! There’s no error handling, and this can lead to unexpected crashes.
+
+##### ✅ How to Do It  
+2. Here's how to gracefully handle those surprises:
+```js
+const fetchData = async () => {
+  try {
+    const { data } = await api.get("/someEndpoint");
+    setData(data);
+  } catch (error) {
+    setError(new Error('Failed to fetch data'));
+  }
+};
+```
+- **What's right?** Now, you’re prepared! If the API call fails, the error is caught and managed, ensuring your app doesn’t just crash unexpectedly.
+
+#### Symptom 2: Cognitive Load  
+Cognitive load is the mental effort required to understand your code. The simpler and more straightforward your code is, the easier it is for others (and future you) to understand and maintain it.
+
+##### ✖️ How Not to Do It  
+Example 1: Too much complexity can make your brain hurt!
+```js
+import React, { useState, useEffect, useCallback } from 'react';
+
+function UserList({ getUsersFromServer }) {
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchUsers = useCallback(async () => {
+    try {
+      setLoading(true);
+      const fetchedUsers = await getUsersFromServer();
+      setUsers(fetchedUsers);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, [getUsersFromServer]);
+
+  useEffect(() => {
+    fetchUsers();
+  }, [fetchUsers]);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
+  return (
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default UserList;
+```
+- **What's wrong?** There’s too much going on! The use of `useCallback`, `useEffect`, and multiple state variables adds unnecessary complexity, making it harder for others to quickly grasp what’s happening.
+
+##### ✅ How to Do It  
+Example 2: Keep it simple, keep it smart!
+```js
+import React, { useState } from 'react';
+
+function UserList({ initialUsers }) {
+  const [users, setUsers] = useState(initialUsers);
+
+  return (
+    <ul>
+      {users.map((user, index) => (
+        <li key={index}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+
+export default UserList;
+```
+- **What's right?** By simplifying the component, the cognitive load is reduced. It’s now easier to understand, maintain, and extend if necessary.
+
+#### Symptom 3: Change Amplification  
+Change amplification happens when a tiny change in one area forces you to modify other unrelated parts of the system. This is a major headache when maintaining or updating software.
+
+Certainly! Let’s illustrate the scenario where having different props for similar UI elements leads to increased complexity due to abstraction. We'll use the Tailwind CSS input component as an example.
+
+##### ✖️ How to Not Do It
+**Scenario: Highly Abstracted Component with Many Conditional Props**
+
+In this example, the input component is highly abstracted to handle various configurations. However, as different components require different props, the complexity of the abstraction grows:
+
+```jsx
+// Complex abstracted input component with many conditional props
+const Input = ({
+  name,
+  prefix,
+  defaultValue,
+  label,
+  placeholder,
+  isDisabled = false,
+  isRequired = false,
+  type = 'text',
+  onChange,
+  onFocus,
+  onBlur,
+  ...props
+}) => {
+  return (
+    <div className="relative">
+      {label && (
+        <label htmlFor={name} className="block text-sm font-medium text-gray-700">
+          {label}
+        </label>
+      )}
+      {prefix && (
+        <span className="absolute inset-y-0 left-0 flex items-center pl-3">
+          <span className="text-gray-500">{prefix}</span>
+        </span>
+      )}
+      <input
+        id={name}
+        name={name}
+        type={type}
+        defaultValue={defaultValue}
+        placeholder={placeholder}
+        disabled={isDisabled}
+        required={isRequired}
+        onChange={onChange}
+        onFocus={onFocus}
+        onBlur={onBlur}
+        className={`block w-full pl-10 pr-3 py-2 border rounded-md ${isDisabled ? 'bg-gray-100 cursor-not-allowed' : 'bg-white'}`}
+        {...props}
+      />
+    </div>
+  );
+};
+
+// Usage in Component A and Component B with different props
+const ComponentA = () => {
+  return (
+    <Input
+      name="username"
+      label="Username"
+      defaultValue="User123"
+      isDisabled={false}
+      onChange={(e) => console.log(e.target.value)}
+    />
+  );
+};
+
+const ComponentB = () => {
+  return (
+    <Input
+      name="email"
+      label="Email Address"
+      prefix="📧"
+      placeholder="Enter your email"
+      isRequired={true}
+      onFocus={() => console.log('Focused')}
+    />
+  );
+};
+```
+
+In this abstracted example, the `Input` component is designed to accommodate various props. However, the more conditional logic and props you add, the more complex and harder to maintain it becomes, ⚠️ especially when different components need different configurations.
+
+##### ✅ How to Do It
+**Scenario: Using Plain JSX/HTML Elements for Specific Cases**
+
+Instead of creating a single complex component, write simpler JSX/HTML elements tailored to each component’s specific needs. This approach reduces complexity and makes the code easier to manage:
+
+```jsx
+// Plain Input component for Component A
+const ComponentA = () => {
+  return (
+    <div className="relative">
+      <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+        Username
+      </label>
+      <input
+        id="username"
+        name="username"
+        type="text"
+        defaultValue="User123"
+        className="block w-full py-2 border rounded-md bg-white"
+        onChange={(e) => console.log(e.target.value)}
+      />
+    </div>
+  );
+};
+
+// Plain Input component for Component B
+const ComponentB = () => {
+  return (
+    <div className="relative">
+      <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+        Email Address
+      </label>
+      <div className="absolute inset-y-0 left-0 flex items-center pl-3">
+        <span className="text-gray-500">📧</span>
+      </div>
+      <input
+        id="email"
+        name="email"
+        type="email"
+        placeholder="Enter your email"
+        required
+        className="block w-full pl-10 py-2 border rounded-md bg-white"
+        onFocus={() => console.log('Focused')}
+      />
+    </div>
+  );
+};
+```
+In this simplified approach, each component directly uses plain JSX/HTML elements suited to its specific needs. This avoids the complexity of a highly abstracted component, making each component’s code more straightforward and easier to maintain. You handle each case directly without adding unnecessary abstraction or conditional logic.
+
+#### Conclusion  
+Complexity in code isn’t just about the number of lines—it’s about how understandable, maintainable, and stable that code is. By recognizing these symptoms—Unknown Unknowns, Cognitive Load, and Change Amplification—you can steer your project away from the pitfalls of complexity and toward clean, efficient, and enjoyable coding practices. Keep it simple, and your future self (and your teammates) will thank you!
 
 
 ## 2. Back-end
