@@ -1390,8 +1390,7 @@ In our project, we follow the **GitHub Flow** model, which means the `main` bran
 3. **Frequent Releases**: By keeping your PRs small, you can release updates more frequently, which keeps your project moving forward.
 
 #### ✖️ How Not to Do It:
-Imagine you’re working on two different features: user authentication and task application. ⚠️ You might think it’s fast & efficient to bundle both into one PR, but this will only lead to confusion and delays.
-
+Imagine you’re working on two different features: user authentication and task application. ⚠️ You might think it’s fast and efficient to bundle both into one PR, thinking it's the logical next step and that you’re killing two birds with one stone. ⛔ Wrong! This will only lead to confusion and delays.
 
 PR with mixed features: 
 ```javascript
