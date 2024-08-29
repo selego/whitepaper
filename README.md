@@ -40,6 +40,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.4 [Flat Data vs Nested Data in MongoDB](#24-flat-data-vs-nested-data-in-mongodb)
    - 2.5 [Consistent API Responses ({data} object)](#25-consistent-api-responses-data-object)
    - 2.6 [Error Management Best Practices](#26-error-management-best-practices)
+   - 2.7 [Simplifying API Endpoints](#27-simplifying-api-endpoints)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -557,6 +558,80 @@ if (!name) return res.status(409).send({ ok: false, error: "NAME_MISSING" });
 ```
 #### ❓ Why to Do This:
 Using standardized error codes like *"NAME_MISSING"* simplifies later tasks such as translation and code detection.
+
+### 2.7 Simplifying API Endpoints
+
+When designing APIs, it's crucial to minimize the number of endpoints while maximizing their functionality. This approach simplifies the backend code, making it easier to maintain and understand, and prevents endpoint Escalation. Here's an example that illustrates this principle by consolidating multiple operations into a single route, avoiding redundancy, and streamlining the update process.
+
+#### ✖️ How to Not Do It
+
+Creating multiple routes for similar operations increases the cognitive load and adds unnecessary complexity.
+
+```js
+// A dedicated route just for adding a campaign to a contact
+router.put("/:id/addToCampaign", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    const data = await contactModel.findOne({ _id: req.params.id });
+    if (!data) return res.status(400).send({ ok: false, code: "UNKNOWN_CONTACT" });
+    if (!req.body?.campaignId || !req.body?.campaignName) return res.status(400).send({ ok: false, code: "MISSING_CAMPAIGN" });
+
+    data.campaigns.push({ id: req.body.campaignId, name: req.body.campaignName });
+    data.updated_at = new Date();
+    await data.save();
+
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+```
+
+#### ✅ How to Do It
+Consolidating logic into a single route reduces complexity and makes the code more maintainable and reusable.
+
+```js
+// A single route handling multiple updates, including adding a campaign to a contact
+router.put("/:id", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    const data = await contactModel.findOne({ _id: req.params.id });
+    if (!data) return res.status(400).send({ ok: false, code: "UNKNOWN_CONTACT" });
+
+    if (req.body?.campaignId) {
+      data.campaigns.push({ id: req.body.campaignId, name: req.body.campaignName });
+    }
+
+    // Other potential updates handled here...
+
+    await data.save();
+
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+```
+
+#### ❓ Why to  do this
+- **Efficiency**: By using a single endpoint to handle multiple related operations, we reduce the number of API routes, making the backend easier to maintain.
+- **Flexibility**: The consolidated route can handle various updates based on the request payload, making it more versatile an reusable.
+- **Simplification**: Reduces the need for redundant code and ensures that all related logic is in one place, making future updates simpler and less error-prone.
+
+By following this approach, we avoid the pitfalls of endpoint escalation and keep our codebase clean and efficient, aligning with the principles of simplicity and maintainability.
+
+#### Client-Side Management
+Alternatively, you can manage the campaigns field directly from the client side:
+
+```js
+// CLIENT-SIDE EXAMPLE: Managing campaigns directly
+const updatedCampaigns = [...knownUser.campaigns];
+updatedCampaigns.push({ campaignName: selectedCampaign.name, campaignId: selectedCampaign._id });
+await api.put(`s_contact/${knownUser._id}`, { campaigns: updatedCampaigns });
+```
+**Explanation**: `updatedCampaigns` is a copy of the existing campaigns array with the new campaign added. The aim is to manage the entire `knownUser.campaigns` from the client side, sending the complete updated list in one go. This simplifies the server-side logic and ensures that all updates are made in a single request.
+
+
 ## 3. Front-end
 
 ### 3.1. Handling API Responses:
