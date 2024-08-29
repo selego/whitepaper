@@ -25,6 +25,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
      - 1.1.1 [Early Returns](#111-early-returns)
      - 1.1.2 [Easy Confirmation](#112-easy-confirmation)
      - 1.1.3 [Update After an Action](#113-update-after-an-action)
+     - 1.1.4 [Make It Easy for Others](#114-make-it-easy-for-others)
    - 1.2 [Beginner Mistakes we see way to often](#12-beginner-mistakes-we-see-way-to-often)
      - 1.2.1 [Filters in the frontend](#121-filters-in-the-frontend)
      - 1.2.2 [Update values](#122-update-values)
@@ -140,6 +141,50 @@ async function handleDelete(id) {
 - **Simplicity**: Using fetch() to refresh data reduces manual state management, making the code cleaner.
 - **Consistency**: Ensures that the application state is always in sync with the server.
 - **Maintainability**: Reduces the risk of bugs and simplifies future updates.
+
+### 1.1.4 Make It Easy for Others
+
+In a team setting, where multiple developers frequently jump in and out of projects, it's crucial to write code that's easy for others to understand. Every small detail can either boost collaboration or slow it down.
+
+#### ✖️ How to not do it
+```javascript
+const getOrdersToPrepare = async (req) => {
+  return new Promise((resolve, reject) => {
+    odoo.connect(async function (err) {
+      if (err) return console.log(err);
+      let params = [];
+      let date = getPreviousDay();
+      let nextDay = getNextDay();
+      if (req.query.date) date = req.query.date;
+      params.push([[["commitment_date", ">=", getTodayDay()], ["commitment_date", "<", nextDay]]]);
+    });
+  });
+};
+```
+- **Let's Break It Down:**
+  - **Function Name (`getOrdersToPrepare`)**: Vague and doesn't fully convey the function's purpose.
+  - **Parameter (`req`)**: Suggests that the function is tightly coupled with a request object, which may not always be necessary.
+  - **Logic Flow**: The function is complex and mixes concerns (e.g., dealing with requests, dates, and Odoo connection) without clear separation, making it harder to follow.
+  - **Date Handling**: The logic for handling dates is embedded within the function, which complicates the overall readability.
+
+#### ✅ How to Do it
+```javascript
+const getOrdersToPrepareByDate = async (date = null) => {
+  return new Promise((resolve, reject) => {
+    odoo.connect(async function (err) {
+      if (err) return console.log(err);
+      let params = [];
+      let selectedDate = date ? date : getPreviousDay();
+      let nextDay = getNextDay();
+      params.push([[["commitment_date", ">=", selectedDate], ["commitment_date", "<", nextDay]]]);
+    });
+  });
+};
+```
+- **Let's Break It Down:**
+  - **Function Name (`getOrdersToPrepareByDate`)**: Clear and descriptive, indicating that the function prepares orders based on a specific date.
+  - **Parameter (`date`)**: Explicitly handles date input, making the function easier to understand and more flexible.
+  - **Date Handling (`selectedDate`)**: The handling of the date is clearer and more straightforward, improving readability and maintainability.
 
 ### 1.2. Beginner Mistakes we see way to often
 
