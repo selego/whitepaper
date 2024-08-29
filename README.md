@@ -480,9 +480,7 @@ Change amplification happens when a tiny change in one area forces you to modify
 
 Certainly! Let’s illustrate the scenario where having different props for similar UI elements leads to increased complexity due to abstraction. We'll use the Tailwind CSS input component as an example.
 
-### Scenario: Different Props for Similar UI Elements
-
-#### ✖️ How to Not Do It
+##### ✖️ How to Not Do It
 **Scenario: Highly Abstracted Component with Many Conditional Props**
 
 In this example, the input component is highly abstracted to handle various configurations. However, as different components require different props, the complexity of the abstraction grows:
@@ -562,7 +560,7 @@ const ComponentB = () => {
 
 In this abstracted example, the `Input` component is designed to accommodate various props. However, the more conditional logic and props you add, the more complex and harder to maintain it becomes, ⚠️ especially when different components need different configurations.
 
-#### ✅ How to Do It
+##### ✅ How to Do It
 **Scenario: Using Plain JSX/HTML Elements for Specific Cases**
 
 Instead of creating a single complex component, write simpler JSX/HTML elements tailored to each component’s specific needs. This approach reduces complexity and makes the code easier to manage:
@@ -612,7 +610,7 @@ const ComponentB = () => {
 ```
 In this simplified approach, each component directly uses plain JSX/HTML elements suited to its specific needs. This avoids the complexity of a highly abstracted component, making each component’s code more straightforward and easier to maintain. You handle each case directly without adding unnecessary abstraction or conditional logic.
 
-### Conclusion  
+#### Conclusion  
 Complexity in code isn’t just about the number of lines—it’s about how understandable, maintainable, and stable that code is. By recognizing these symptoms—Unknown Unknowns, Cognitive Load, and Change Amplification—you can steer your project away from the pitfalls of complexity and toward clean, efficient, and enjoyable coding practices. Keep it simple, and your future self (and your teammates) will thank you!
 
 
