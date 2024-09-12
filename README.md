@@ -757,11 +757,26 @@ Complexity in code isn’t just about the number of lines—it’s about how und
 
 ### 1.5.1 Loading States
 
+**Scenario: Using a lot of states for one component**
+
+##### ✖️ How to Not Do It
+
 ```js
 const [loadingShowCases, setLoadingShowCases] = useState(true);
 const [loadingEvents, setLoadingEvents] = useState(true);
 const [loading, setLoading] = useState(true);
-const [loadingRessources, setLoadingRessources] = useState(false);
+const [loadingRessources, setLoadingRessources] = useState(true);
+```
+
+#### ✅ How to Do it
+
+```js
+const [loadingStates, setLoadingStates] = useState({
+  showCases: true,
+  events: true,
+  general: true,
+  ressources: true,
+});
 ```
 
 ## 2. Back-end
