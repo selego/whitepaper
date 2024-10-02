@@ -4,15 +4,16 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
 
 ## Unknown Unknowns
 
-<div style="display: flex; align-items: center;">
-  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2bcc599a6d3448cac599dbf86985b947/5w7z54.jpg" alt="Unknown Unknowns" style="width: 200px; margin-right: 20px;">
-  <p>
+<div style="display: flex; align-items: center; margin-bottom: 30px;">
+  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2bcc599a6d3448cac599dbf86985b947/5w7z54.jpg" alt="Unknown Unknowns" style="width: 300px; margin-right: 30px;">
+  <div>
     These are the hidden problems you didn’t know existed until they cause headaches. What this looks like:
+    
     - **Magic formulas** – Maths or logic with no context. No one knows why it's there, but no one dares to touch it.
     - **Mixed logic** – Business logic jammed into services. Now it’s a mess no one wants to clean up.
     - **Dead code** – Unused code that everyone’s too afraid to delete.
     - **Leftover props** – Components dragging around props that may or may not be needed. No one knows, so they just stay.
-  </p>
+  </div>
 </div>
 
 ## Change Amplification
