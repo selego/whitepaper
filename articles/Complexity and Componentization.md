@@ -24,7 +24,6 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
   <div>
   <p>
     A small bad decision spreads quickly. Once someone sees it, they copy it everywhere, and now it’s a pattern for no good reason. What this looks like:
-    
     - **"Just this once" mentality** – You make an exception in the code thinking it won't hurt. Suddenly it’s everywhere, and no one remembers why it was added in the first place.
     - **Pointless props** – Adding a prop to avoid duplicating a few lines of code, but now the next person has to deal with a more complicated component for no reason.
   </p>
@@ -38,7 +37,6 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
   <div>
     <p>
     The more abstractions you add, the more mental effort it takes to understand what's happening. Shallow functions can make things worse by spreading logic across too many disconnected pieces. A deeper function with clear flow reduces this burden. What this looks like:
-    
     - **Unnecessary abstraction** – Chopping up logic into too many small functions adds layers of confusion. A clear, deep function with purpose is easier to follow.
     - **Readable but not at first glance** – It’s okay if it takes a few more seconds to read as long as it’s well-structured. Avoid tricks like ternary operators that make someone pause and rethink the flow.
     </p>
