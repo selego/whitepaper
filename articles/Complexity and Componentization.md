@@ -37,17 +37,17 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
   </p>
 </div>
 
-
-
 ## Change Amplification
 
 A small bad decision spreads quickly. Once someone sees it, they copy it everywhere, and now it’s a pattern for no good reason. What this looks like:
+
 - **"Just this once" mentality** – You make an exception in the code thinking it won't hurt. Suddenly it’s everywhere, and no one remembers why it was added in the first place.
 - **Pointless props** – Adding a prop to avoid duplicating a few lines of code, but now the next person has to deal with a more complicated component for no reason.
 
 ## Cognitive Load
 
 The more abstractions you add, the more mental effort it takes to understand what's happening. Shallow functions can make things worse by spreading logic across too many disconnected pieces. A deeper function with clear flow reduces this burden. What this looks like:
+
 - **Unnecessary abstraction** – Chopping up logic into too many small functions adds layers of confusion. A clear, deep function with purpose is easier to follow.
 - **Readable but not at first glance** – It’s okay if it takes a few more seconds to read as long as it’s well-structured. Avoid tricks like ternary operators that make someone pause and rethink the flow.
 
@@ -56,6 +56,7 @@ The more abstractions you add, the more mental effort it takes to understand wha
 Duplicate when it keeps things simple and avoids over-abstraction. A few lines of duplicate code are often better than a complex reusable component.
 
 The three schools of duplication:
+
 1. **DRY** (“Don’t repeat yourself”) – Outdated good practice. Fixing the same bug in 7 places led to this concept. The solution would be to componentize right away.
 2. **WET** (“Write Everything Twice”) – Recognize patterns and componentize after the third time.
 3. **AHA** – “Avoid Hasty Abstractions.” Always prefer duplication over unnecessary abstraction. Duplicating is always cheaper than getting the abstraction wrong.
@@ -65,6 +66,7 @@ The three schools of duplication:
 Programmer A sees duplication and extracts it into a new abstraction, replacing the duplicated code. Time passes and new requirements arise that fit the abstraction…almost. Programmer B alters it with parameters and conditionals, and suddenly the abstraction behaves differently. Over time, the code becomes a condition-laden procedure. You appear in the story, and the code is now incomprehensible.
 
 When you encounter this, resist the sunk cost fallacy. Instead:
+
 - Reintroduce duplication by inlining the abstracted code back into each caller.
 - Remove unnecessary bits for each caller, keeping only what’s needed.
 
@@ -81,5 +83,3 @@ The takeaway from AHA Programming is not to be dogmatic. Write the abstraction w
 A pragmatic approach is key. That’s why I prefer AHA over DRY or WET. It helps you stay mindful of abstractions without rigid rules on when to extract code. If you find yourself mired in bad abstractions, take heart! Sandi Metz gives great steps for getting out of that mess. Don’t fall into the sunk cost trap – sometimes the fastest way forward is to go back and rethink your abstractions.
 
 Optimize for change and always keep in mind: big components at early stages, componentize as your product matures. In my opinion, prefer WET or AHA for a more flexible and readable codebase.
-
-
