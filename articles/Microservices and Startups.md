@@ -7,7 +7,7 @@
 
 You’ve decided to use microservices? I will promise you one thing. Everything will become more challenging and time-consuming — development, debugging, deployment, testing, resilience. Do you really need them, especially if you don't have a whopping 100 million users?
 
-Check out this [article by Ken Kantzer](#https://www.google.com/url?q=https://kenkantzer.com/learnings-from-5-years-of-tech-startup-code-audits/&sa=D&source=docs&ust=1727885197504169&usg=AOvVaw0jUDihXs-P5Ww-kCjPo6oA) on learnings from 5 years of startup audits. I will sum it up for you: startups doing great usually keep things simple. The ones that got into trouble? They jumped too soon into microservices and other complicated setups.
+Check out this [article by Ken Kantzer](https://www.google.com/url?q=https://kenkantzer.com/learnings-from-5-years-of-tech-startup-code-audits/&sa=D&source=docs&ust=1727885197504169&usg=AOvVaw0jUDihXs-P5Ww-kCjPo6oA) on learnings from 5 years of startup audits. I will sum it up for you: startups doing great usually keep things simple. The ones that got into trouble? They jumped too soon into microservices and other complicated setups.
 
 Many startups experience imposter syndrome when they are keeping it simple and straightforward. “Everyone is doing microservices, yet we have a single-node monolith maintained by just a few engineers, and a Mongo instance — what are we doing wrong?” The answer is almost always “nothing.”
 
@@ -15,7 +15,7 @@ Let's bust a myth — having a monolith is not a bad thing. Look at big companie
 
 So, next time you feel the pressure to go with the latest tech trends, remember: simplicity is often your best bet. Focus on what solves your problems now without making things needlessly complex.
 
-Here’s a comedic [video on microservices](#https://www.youtube.com/watch?v=y8OnoxKotPQ&ab_channel=KRAZAM) that we love. It shows how even the simplest things (such as adding a birthdate) can become complicated if that’s what we’re seeking.
+Here’s a comedic [video on microservices](https://www.youtube.com/watch?v=y8OnoxKotPQ&ab_channel=KRAZAM) that we love. It shows how even the simplest things (such as adding a birthdate) can become complicated if that’s what we’re seeking.
 
 Remember, **you can scale without your architecture looking like the Afghanistan War Strategy.**
 
