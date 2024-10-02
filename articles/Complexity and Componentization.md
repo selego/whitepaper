@@ -74,6 +74,6 @@ The takeaway from AHA Programming is not to be dogmatic. Write the abstraction w
 
 ## Conclusion
 
-A pragmatic approach is key. That’s why I prefer AHA over DRY or WET. It helps you stay mindful of abstractions without rigid rules on when to extract code. If you find yourself mired in bad abstractions, take heart! 
+We prefer AHA over DRY or WET. It helps you stay mindful of abstractions without rigid rules on when to extract code. DRY on the other hand is easier to follow. So you might be asked to do this at SELEGO. 
 
 Optimize for change and always keep in mind: big components at early stages, componentize as your product matures. In my opinion, prefer WET or AHA for a more flexible and readable codebase.
