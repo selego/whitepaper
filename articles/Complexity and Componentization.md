@@ -2,6 +2,9 @@
 
 Code complexity grows quietly if we’re not careful. It sneaks in through hidden abstractions, bad practices, and leftover junk. Let’s break down some common issues.
 
+
+## Unknown Unknowns
+
 <div style="display: flex; align-items: center; margin-bottom: 30px;">
   <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2bcc599a6d3448cac599dbf86985b947/5w7z54.jpg" alt="Unknown Unknowns" style="width: 300px; margin-right: 30px;">
   <div>
@@ -15,6 +18,7 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
   </div>
 </div>
 
+## Change Amplification
 <div style="display: flex; align-items: center; margin-bottom: 30px;">
   <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2512276ef192d2fad1188985b14b49f6/DALL%C2%B7E%202024-10-02%2015.58.28%20-%20A%20humorous%20but%20meaningful%20meme%20illustrating%20%27Change%20Amplification%27%20in%20software%20development.%20Show%20a%20domino%20effect%20where%20the%20first%20small%20domino%20is%20label.webp" alt="Change Amplification" style="width: 300px; margin-right: 30px;">
   <div>
@@ -25,6 +29,9 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
     </ul>
   </div>
 </div>
+
+
+## Cognitive Load
 
 <div style="display: flex; align-items: center;">
   <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/76cdac59a9389cef53e81be3c4eedb4c/DALL%C2%B7E%202024-10-02%2015.51.41%20-%20A%20meme%20illustrating%20cognitive%20load%20in%20software%20development.%20Show%20a%20developer%20sitting%20at%20their%20desk%2C%20with%20their%20brain%20exploding%20from%20too%20many%20thought%20b.webp" alt="Cognitive Load" style="width: 300px; margin-right: 30px;">
