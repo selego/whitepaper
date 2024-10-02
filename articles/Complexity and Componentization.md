@@ -6,51 +6,45 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
 
 <div style="display: flex; align-items: center; margin-bottom: 30px;">
   <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2bcc599a6d3448cac599dbf86985b947/5w7z54.jpg" alt="Unknown Unknowns" style="width: 300px; margin-right: 30px;">
-  <div>
+<div>
+ <p>
     These are the hidden problems you didn’t know existed until they cause headaches. What this looks like:
-    
     - **Magic formulas** – Maths or logic with no context. No one knows why it's there, but no one dares to touch it.
     - **Mixed logic** – Business logic jammed into services. Now it’s a mess no one wants to clean up.
     - **Dead code** – Unused code that everyone’s too afraid to delete.
     - **Leftover props** – Components dragging around props that may or may not be needed. No one knows, so they just stay.
+  </p>
   </div>
 </div>
 
 ## Change Amplification
 
-<div style="display: flex; align-items: center;">
-  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2512276ef192d2fad1188985b14b49f6/DALL%C2%B7E%202024-10-02%2015.58.28%20-%20A%20humorous%20but%20meaningful%20meme%20illustrating%20%27Change%20Amplification%27%20in%20software%20development.%20Show%20a%20domino%20effect%20where%20the%20first%20small%20domino%20is%20label.webp" alt="Change Amplification" style="width: 200px; margin-right: 20px;">
+<div style="display: flex; align-items: center; margin-bottom: 30px;">
+  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/2512276ef192d2fad1188985b14b49f6/DALL%C2%B7E%202024-10-02%2015.58.28%20-%20A%20humorous%20but%20meaningful%20meme%20illustrating%20%27Change%20Amplification%27%20in%20software%20development.%20Show%20a%20domino%20effect%20where%20the%20first%20small%20domino%20is%20label.webp" alt="Change Amplification" style="width: 300px; margin-right: 30px;">
+  <div>
   <p>
     A small bad decision spreads quickly. Once someone sees it, they copy it everywhere, and now it’s a pattern for no good reason. What this looks like:
+    
     - **"Just this once" mentality** – You make an exception in the code thinking it won't hurt. Suddenly it’s everywhere, and no one remembers why it was added in the first place.
     - **Pointless props** – Adding a prop to avoid duplicating a few lines of code, but now the next person has to deal with a more complicated component for no reason.
   </p>
+  </div>
 </div>
 
 ## Cognitive Load
 
 <div style="display: flex; align-items: center;">
-  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/76cdac59a9389cef53e81be3c4eedb4c/DALL%C2%B7E%202024-10-02%2015.51.41%20-%20A%20meme%20illustrating%20cognitive%20load%20in%20software%20development.%20Show%20a%20developer%20sitting%20at%20their%20desk%2C%20with%20their%20brain%20exploding%20from%20too%20many%20thought%20b.webp" alt="Unknown Unknowns" style="width: 200px; margin-right: 20px;" alt="Cognitive Load" style="width: 200px; margin-right: 20px;">
-  <p>
+  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/76cdac59a9389cef53e81be3c4eedb4c/DALL%C2%B7E%202024-10-02%2015.51.41%20-%20A%20meme%20illustrating%20cognitive%20load%20in%20software%20development.%20Show%20a%20developer%20sitting%20at%20their%20desk%2C%20with%20their%20brain%20exploding%20from%20too%20many%20thought%20b.webp" alt="Cognitive Load" style="width: 300px; margin-right: 30px;">
+  <div>
+    <p>
     The more abstractions you add, the more mental effort it takes to understand what's happening. Shallow functions can make things worse by spreading logic across too many disconnected pieces. A deeper function with clear flow reduces this burden. What this looks like:
+    
     - **Unnecessary abstraction** – Chopping up logic into too many small functions adds layers of confusion. A clear, deep function with purpose is easier to follow.
     - **Readable but not at first glance** – It’s okay if it takes a few more seconds to read as long as it’s well-structured. Avoid tricks like ternary operators that make someone pause and rethink the flow.
-  </p>
+    </p>
+  </div>
 </div>
-
-## Change Amplification
-
-A small bad decision spreads quickly. Once someone sees it, they copy it everywhere, and now it’s a pattern for no good reason. What this looks like:
-
-- **"Just this once" mentality** – You make an exception in the code thinking it won't hurt. Suddenly it’s everywhere, and no one remembers why it was added in the first place.
-- **Pointless props** – Adding a prop to avoid duplicating a few lines of code, but now the next person has to deal with a more complicated component for no reason.
-
-## Cognitive Load
-
-The more abstractions you add, the more mental effort it takes to understand what's happening. Shallow functions can make things worse by spreading logic across too many disconnected pieces. A deeper function with clear flow reduces this burden. What this looks like:
-
-- **Unnecessary abstraction** – Chopping up logic into too many small functions adds layers of confusion. A clear, deep function with purpose is easier to follow.
-- **Readable but not at first glance** – It’s okay if it takes a few more seconds to read as long as it’s well-structured. Avoid tricks like ternary operators that make someone pause and rethink the flow.
+</div>
 
 ## When to Duplicate / Not Duplicate
 
