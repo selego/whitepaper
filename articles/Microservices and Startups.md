@@ -1,7 +1,7 @@
 # Microservices - Our Advice: Do not try to solve problems you do not have.
 
 <div style="display: flex; align-items: center; margin-bottom: 30px;">
-  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/8d5b33be4139586b3ba5e660e5401365/Screenshot%202024-10-02%20at%2017.03.40.png" alt="Microservices" style="width: 300px; margin-right: 30px;">
+  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/8d5b33be4139586b3ba5e660e5401365/Screenshot%202024-10-02%20at%2017.03.40.png" alt="Microservices" style="width: 900px; margin-right: 30px;">
   <div>
 </div>
 
@@ -20,7 +20,7 @@ Here’s a comedic [video on microservices](#https://www.youtube.com/watch?v=y8O
 Remember, **you can scale without your architecture looking like the Afghanistan War Strategy.**
 
 <div style="display: flex; align-items: center; margin-bottom: 30px;">
-  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/00337da018fe999a43a1bc41c898b7f5/Screenshot%202024-10-02%20at%2017.03.48.png" alt="Microservices War" style="width: 300px; margin-right: 30px;">
+  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/00337da018fe999a43a1bc41c898b7f5/Screenshot%202024-10-02%20at%2017.03.48.png" alt="Microservices War" style="width: 900px; margin-right: 30px;">
   <div>
 </div>
 
