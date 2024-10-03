@@ -2,6 +2,12 @@
 
 ## Premature Optimization Is the Root of All Evil
 
+<div style="display: flex; align-items: center; margin-bottom: 30px;">
+  <img src="https://bank.cellar-c2.services.clever-cloud.com/file/project/23a695377fd52e1df4f4d091d4b2156a/I5zmo82JtRiW2YGJ53i0Lsmsd-ddAEkOFXHuJGO2QNg.webp" alt="Premature Optimisation" style="width: 900px; margin-right: 30px;">
+  <div>
+</div>
+
+
 Premature optimization is spending a lot of time on something that you may not actually need. One of the biggest challenges is making sure we are making good use of our time. The more confidence you have that you are building the right things, the more time you should put into proper software architecture, performance, scalability, etc. Striking this balance is always the challenge. Like most things in life, the answer is almost always "it depends."
 
 The performance and scalability of your application are important. You just need to make sure you are building the right feature set first. Avoid premature optimization by getting user feedback early and often from your users.
