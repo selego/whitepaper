@@ -38,8 +38,8 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
   <div>
     <p>The more abstractions you add, the more mental effort it takes to understand what's happening. Shallow functions can make things worse by spreading logic across too many disconnected pieces. A deeper function with clear flow reduces this burden. What this looks like:</p>
     <ul>
-      <li><strong>Unnecessary abstraction</strong> – Chopping up logic into too many small functions adds layers of confusion. A clear, deep function with purpose is easier to follow.</li>
-      <li><strong>Avoid nested if...else</strong> – It is a nightmare to understand what is going on and when! Instead, prefer functions that call other functions for better readability and structure.</li>
+      <li><strong>Unnecessary abstraction</strong> – Chopping up logic into too many small functions adds layers of confusion. Avoid functions that call other functions, as this increases abstraction and makes it harder to follow the logic.</li>
+      <li><strong>Avoid nested if...else</strong> – It is a nightmare to understand what is going on and when! Avoid nested if...else structures to improve readability and reduce complexity.</li>
       <li><strong>Readable but not at first glance</strong> – It’s okay if it takes a few more seconds to read as long as it’s well-structured. Avoid tricks like ternary operators that make someone pause and rethink the flow.</li>
     </ul>
   </div>
