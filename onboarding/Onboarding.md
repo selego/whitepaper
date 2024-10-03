@@ -1,7 +1,7 @@
 # What We Expect from Developers 🚀 [PLEASE READ]
 
 ## Save the Startup You Work For 🛠️
-It’s okay to make mistakes—what's not cool is repeating them. We’ve seen certain issues come up over and over again, so we put together a little guide to help you avoid those same struggles. Check out some of those stories: [link].
+It’s okay to make mistakes—what's not cool is repeating them. We’ve seen certain issues come up over and over again, so we put together a little guide to help you avoid those same struggles. Check out some of those stories: [[link](https://github.com/selego/whitepaper/blob/main/articles/Bed%20Time%20Stories.md)].
 
 ## Write Boring Code 😴
 In our startup studio, most projects will need to pivot at some point. This means that your perfectly crafted, clean, and well-tested code will likely be thrown out 95% of the time. So instead of spending too much time trying to optimize, we focus on **simplicity and consistency**.
