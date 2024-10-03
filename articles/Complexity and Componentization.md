@@ -39,10 +39,12 @@ Code complexity grows quietly if we’re not careful. It sneaks in through hidde
     <p>The more abstractions you add, the more mental effort it takes to understand what's happening. Shallow functions can make things worse by spreading logic across too many disconnected pieces. A deeper function with clear flow reduces this burden. What this looks like:</p>
     <ul>
       <li><strong>Unnecessary abstraction</strong> – Chopping up logic into too many small functions adds layers of confusion. A clear, deep function with purpose is easier to follow.</li>
+      <li><strong>Avoid nested if...else</strong> – It is a nightmare to understand what is going on and when! Instead, prefer functions that call other functions for better readability and structure.</li>
       <li><strong>Readable but not at first glance</strong> – It’s okay if it takes a few more seconds to read as long as it’s well-structured. Avoid tricks like ternary operators that make someone pause and rethink the flow.</li>
     </ul>
   </div>
 </div>
+>
 
 
 ## When to Duplicate / Not Duplicate
@@ -74,6 +76,6 @@ The takeaway from AHA Programming is not to be dogmatic. Write the abstraction w
 
 ## Conclusion
 
-We prefer AHA over DRY or WET. It helps you stay mindful of abstractions without rigid rules on when to extract code. DRY on the other hand is easier to follow. So you might be asked to do this at SELEGO. 
+A pragmatic approach is key. That’s why I prefer AHA over DRY or WET. It helps you stay mindful of abstractions without rigid rules on when to extract code. If you find yourself mired in bad abstractions, take heart! Sandi Metz gives great steps for getting out of that mess. Don’t fall into the sunk cost trap – sometimes the fastest way forward is to go back and rethink your abstractions.
 
 Optimize for change and always keep in mind: big components at early stages, componentize as your product matures. In my opinion, prefer WET or AHA for a more flexible and readable codebase.
