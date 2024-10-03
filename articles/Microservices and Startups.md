@@ -5,7 +5,7 @@
   <div>
 </div>
 
-You’ve decided to use microservices? I will promise you one thing. Everything will become more challenging and time-consuming — development, debugging, deployment, testing, resilience. Do you really need them, especially if you don't have a whopping 100 million users?
+You’ve decided to use microservices? I will promise you one thing. Everything will become more challenging and time-consuming — development, debugging, deployment, testing, resilience. Do you really need them, especially if you don't have a 100 million users?
 
 Check out this [article by Ken Kantzer](https://www.google.com/url?q=https://kenkantzer.com/learnings-from-5-years-of-tech-startup-code-audits/&sa=D&source=docs&ust=1727885197504169&usg=AOvVaw0jUDihXs-P5Ww-kCjPo6oA) on learnings from 5 years of startup audits. I will sum it up for you: startups doing great usually keep things simple. The ones that got into trouble? They jumped too soon into microservices and other complicated setups.
 
@@ -25,15 +25,5 @@ Remember, **you can scale without your architecture looking like the Afghanistan
 </div>
 
 ---
-
-## RECAP
-
-We use a **modern monolith** approach for building apps. Here's why and how:
-
-- **Simplicity**: One codebase means less hassle. We avoid the complexity of juggling multiple services.
-- **Efficiency**: With everything in one place, we find and fix issues faster. This speeds up our development cycle.
-- **Focus on Development**: Less time on technical complexities means more time for actual coding and innovation.
-- **Better Testing**: Testing is simpler when all parts of the app are together. This leads to more reliable software.
-- **Right Tool for Us**: We choose what works best for our projects, not just what's trendy. For many of our projects, a modern monolith hits the mark.
 
 In short, we keep it straightforward and effective, focusing on what delivers the best results for our projects.
