@@ -7,7 +7,7 @@ This guide provides standards and best practices for developing projects at Sele
 To establish a consistent coding style and workflow for all projects, making collaboration easier and reducing technical debt.
 
 ### Onboarding Materials
-To get started, please refer to our [Onboarding Materials](https://github.com/selego/whitepaper/tree/main/onboarding) for essential guidelines and resources.
+To get started, please refer to our [Onboarding Materials](https://github.com/selego/whitepaper/blob/main/onboarding/Expectations.md) for essential guidelines and resources.
 
 ### Why It's Important to Converge to the Same Tech
 - **Consistency:** Code should look like it was written by a single person.
