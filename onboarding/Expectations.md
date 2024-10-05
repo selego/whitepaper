@@ -1,14 +1,15 @@
 # What We Expect from Developers 🚀 [PLEASE READ]
 
 ## Save the Startup You Work For 🛠️
+
 It’s okay to make mistakes—what's not cool is repeating them. We’ve seen certain issues come up over and over again, so we put together a little guide to help you avoid those same struggles. Check out more: [[Bed Time Stories 🌙](https://github.com/selego/whitepaper/blob/main/articles/Bed%20Time%20Stories.md)].
 
 ## Write Boring Code 😴
-In our startup studio, most projects will need to pivot at some point. This means that your perfectly crafted, clean, and well-tested code will likely be thrown out 95% of the time. So instead of spending too much time trying to optimize, we focus on **simplicity and consistency**.
+If you’ve just left engineering school, there is a high chance you appreciate complexity and have something called the Jimmy Neutron syndrome. The sooner you get rid of it, the more value you’ll provide to the startups we are helping. In our startup studio, most projects will need to pivot at some point. This means that your perfectly crafted, clean, and well-tested code will likely be thrown out 95% of the time. So instead of spending too much time trying to optimize, we focus on **simplicity and consistency**.
 
 We believe it's better to take a few extra minutes to simplify code and features upfront, rather than spend days overengineering something that won’t add business value. **Iteration is key** 🔄.
 
-We also expect developers to challenge the features being requested and make sure they’re done right. Our job is to give startups enough runway to find their Product Market Fit (PMF) and keep growing 🌱.
+As you saw in some of the stories above, the startups that come to us for help have an average 3 months worth of cash to survive. Our mission is not to bleed them dry. We want to have an impact and help them make it! Our job is to fill in the execution gaps.
 
 ## Code for Readability 👓
 The ratio of time spent reading versus writing code is well over 10 to 1 📚. You'll spend more time reading old code than writing new code.
@@ -29,6 +30,9 @@ Always think ahead, but don’t implement everything upfront. **Over-optimizatio
 So, forget about your 10 microservices communicating via gRPC if you only have 2 clients. Don’t optimize until it’s necessary. Why focus on perfecting your system when the product might not even work, or the company could die tomorrow? 💀
 
 You’ll never have enough engineers to solve all the technical challenges raised, but that’s fine. Only a few are important, so focus on those. Speed optimization can wait ⏳.
+
+PS. We also expect developers to challenge the features being requested and make sure they’re done right. Our job is to give startups enough runway to find their Product Market Fit (PMF) and keep growing 🌱.
+
 
 ## Think Business 💼
 Every time you log your hours in Accounting, it directly impacts the bill we send to the client 💸. For example, if the client pays €300 per day and you record 4 hours of work on their project, they’ll be billed €150 at the end of the month. 
