@@ -81,7 +81,7 @@ const AuthProvider = ({ children }) => {
   );
 };
 
-- Efficient Data Fetching: Centralize API calls using reusable services. Optimize with memoization or caching.
+- Efficient Data Fetching: Centralize API calls using reusable services.
 
 Example:
 const fetchEvents = async () => {
@@ -103,7 +103,7 @@ useEffect(() => {
 
 
 Error Handling and Validation
-- Custom Validation Functions: Use lightweight, custom functions for runtime checks instead of external libraries like Zod.
+- Custom Validation Functions: Use lightweight, custom functions for runtime checks instead of external libraries like Zod, Joi, etc.
 
 Example:
 const validateEmail = (email) => {
