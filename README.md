@@ -45,6 +45,7 @@ This guide covers repository structure, branching strategy, commit messages, pul
    - 2.5 [Consistent API Responses ({data} object)](#25-consistent-api-responses-data-object)
    - 2.6 [Error Management Best Practices](#26-error-management-best-practices)
    - 2.7 [Simplifying API Endpoints](#27-simplifying-api-endpoints)
+   - 2.8 [Separation of Concerns in Service Files](#28-separation-of-concerns-in-service-files)
 3. [Front-end](#3-front-end)
    - 3.1 [Conventions on Calling API](#31-handling-api-responses)
    - 3.2 [Separating Concerns](#32-separating-concerns)
@@ -917,6 +918,127 @@ await api.put(`s_contact/${knownUser._id}`, { campaigns: updatedCampaigns });
 ```
 **Explanation**: `updatedCampaigns` is a copy of the existing campaigns array with the new campaign added. The aim is to manage the entire `knownUser.campaigns` from the client side, sending the complete updated list in one go. This simplifies the server-side logic and ensures that all updates are made in a single request.
 
+### 2.8 Separation of Concerns in Service Files 
+
+To ensure our codebase remains modular and reusable, service files should only include general-purpose functionality. They should not contain business logic or project-specific details. This ensures that service files can be copied and reused across different projects.
+
+#### ✖️ How to Not Do It
+
+```js
+const socketIO = require("socket.io");
+const Anthropic = require("@anthropic-ai/sdk");
+const { CLAUDE_API_KEY } = require("../config");
+
+const client = new Anthropic({ apiKey: CLAUDE_API_KEY });
+
+// Business-specific logic embedded (NOT RECOMMENDED)
+async function generateAIMessage(prompt) {
+  const response = await client.complete({ prompt });
+  return response.completion;
+}
+
+async function processSocketEvent(eventData) {
+  if (!eventData.type) {
+    throw new Error("Event type is missing.");
+  }
+  if (eventData.type === "chat") {
+    return await generateAIMessage(eventData.message);
+  } else if (eventData.type === "stream") {
+    return await getStreamFromAI(eventData.input);
+  }
+}
+
+module.exports = { client, generateAIMessage, processSocketEvent };
+```
+
+The inclusion of functions like generateAIMessage, processSocketEvent ties the service file to the current project’s business logic. This mixes responsibilities, making the service file harder to maintain and less reusable.
+
+#### ✅ How to Do It
+
+```js
+const socketIO = require("socket.io");
+const Anthropic = require("@anthropic-ai/sdk");
+const { CLAUDE_API_KEY } = require("../config");
+
+const client = new Anthropic({ apiKey: CLAUDE_API_KEY });
+
+module.exports = { client };
+```
+
+This example show a service file designed for reusability. It only initializes and exports a general-purpose client without embedding project-specific logic. Business logic and project-specific functions should be written in either controllers or utility files to maintain a clear separation of concerns.
+
+#### ❓ Why to  do this
+- **Reusability**: By keeping service files generic and free from project-specific logic, they can be easily reused across different projects, reducing duplication of code and effort.
+- **Simplification**: This separation simplifies the codebase, making it easier to understand, maintain, and debug, as each component has a clearly defined purpose.
+
+#### ✖️ Another Issue That's Seen a Lot: Separating Initialization from Controllers
+
+Another common issue is the direct initialization of services within controllers. This practice can clutter controller files and make it hard to maintain. Instead, it's good to extract initialization logic into service files, allowing controllers to focus solely on handling requests and responses.
+
+#### ✖️ How to Not Do It
+
+Here's an example of a controller that improperly initializes a service directly within the controller:
+
+```js
+/// .... imports 
+
+const AgentObject = require("../models/agent");
+const { OPENAI_API_KEY } = require("../config");
+
+const openai = new OpenAI({ apiKey: OPENAI_API_KEY }); // Directly initializing the client here
+
+const SERVER_ERROR = "SERVER_ERROR";
+const BAD_REQUEST = "BAD_REQUEST";
+
+router.post("/", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    if (!req.body.name) return res.status(400).send({ ok: false, code: BAD_REQUEST });
+    
+    // Use the openai client directly in the controller...
+    const response = await openai.chat.completions.create({ /* parameters */ });
+    
+    const data = await AgentObject.create(req.body);
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+
+```
+
+#### ✅ How to Do It
+
+Instead, the initialization logic should be moved to its own service file:
+
+```javascript
+
+// ... imports
+
+const AgentObject = require("../models/agent");
+const openai = require("../services/openai"); // Import the initialized client service 
+
+const SERVER_ERROR = "SERVER_ERROR";
+const BAD_REQUEST = "BAD_REQUEST";
+
+router.post("/", passport.authenticate(["admin", "user"], { session: false }), async (req, res) => {
+  try {
+    if (!req.body.name) return res.status(400).send({ ok: false, code: BAD_REQUEST });
+    
+    // Use the imported openai client
+    const response = await openai.chat.completions.create({ /* parameters */ });
+    
+    const data = await AgentObject.create(req.body);
+    return res.status(200).send({ ok: true, data });
+  } catch (error) {
+    capture(error);
+    res.status(500).send({ ok: false, code: SERVER_ERROR, error });
+  }
+});
+
+```
+
+By adopting this approach, you keep the controller focused on its primary responsibility, leading to cleaner and more maintainable code.
 
 ## 3. Front-end
 
