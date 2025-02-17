@@ -109,7 +109,7 @@ A cheap way to get a confirmation behavior on deletion or important tasks. The o
 
 ```js
 async function onDelete(){
-  if (!window.confirm({Are you sure ?})) return;
+  if (!window.confirm("Are you sure ?")) return;
   await submit();
 }
 ```
