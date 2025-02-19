@@ -271,6 +271,73 @@ router.get("/:id", passport.authenticate(["user"], { session: false }), async (r
 ```
 [Here](https://www.imperva.com/learn/application-security/nosql-injection/) you can find an article that explain what can be done if you don’t
 
+The same approach can be used for managing a list of content such as comments, tags, etc.
+
+#### ✖️ How to Not Do It
+
+```javascript
+const addComment = async (todoId, comment) => {
+    try {
+      const { ok, data } = await api.post(`/mission_ao_todo/${todoId}/comment`, {
+        text: comment,
+        user_id: user._id,
+        user_name: user.name,
+        user_avatar: user.avatar,
+      });
+      if (!ok) throw new Error("Failed to add comment");
+
+      setSelectedTodo(data);
+      toast.success("Comment added successfully!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Error adding comment");
+    }
+  };
+```
+
+#### ❓ Why to Not Do This
+- **Creates Unnecessary Routes**: Avoid adding dedicated endpoints for managing comments.
+- **Increased Complexity**: Having separate routes for adding comments makes API maintenance harder.
+- **Scalability Issues**: The approach is not optimal for large-scale applications.
+
+#### ✅ How to Do It
+
+```javascript
+const addComment = async (todoId, comment) => {
+  try {
+    const { ok, data } = await api.put(`/mission_ao_todo/${todoId}`, {
+      comments: [...existingComments, {
+        text: comment,
+        user_id: user._id,
+        user_name: user.name,
+        user_avatar: user.avatar,
+      }],
+    });
+    if (!ok) throw new Error("Failed to add comment");
+
+    setSelectedTodo(data);
+    toast.success("Comment added successfully!");
+  } catch (error) {
+    console.error(error);
+    toast.error("Error adding comment");
+  }
+};
+```
+
+#### ❓ Why This Approach?
+- **Avoids Route Multiplication**: No need for a separate `/comment` endpoint.
+- **Consistent Data Structure**: Keeps the comment list within the main object.
+- **Easier Frontend Handling**: Always updating the entire object ensures that the UI stays in sync.
+
+### 🔥 Key Takeaways
+- Always use `PUT` for updates instead of `POST`.
+- Avoid route multiplication to keep APIs clean and scalable.
+- For comments, return all comments in the parent object rather than creating a separate endpoint.
+
+By following these best practices, your application will be more maintainable, secure, and scalable.
+
+
+
 ### 1.2.3 Abstractions: To Abstract or Not to Abstract?
 
 Abstractions are like that tricky magic trick: you do it when you don’t want to repeat yourself (DRY - Don’t Repeat Yourself). The DRY principle suggests that if you’re writing the same code twice, you should abstract it. 🛑 But hold up! Before you jump into abstraction, let’s weigh the pros and cons.
