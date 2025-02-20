@@ -305,14 +305,14 @@ const addComment = async (todoId, comment) => {
 ```javascript
 const addComment = async (todoId, comment) => {
   try {
-    const { ok, data } = await api.put(`/mission_ao_todo/${todoId}`, {
-      comments: [...existingComments, {
-        text: comment,
-        user_id: user._id,
-        user_name: user.name,
-        user_avatar: user.avatar,
-      }],
+    comments.push({
+      text: comment,
+      user_id: user._id, 
+      user_name: user.name,
+      user_avatar: user.avatar,
     });
+
+    const { ok, data } = await api.put(`/mission_ao_todo/${todoId}`, { comments });
     if (!ok) throw new Error("Failed to add comment");
 
     setSelectedTodo(data);
