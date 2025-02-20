@@ -200,7 +200,8 @@ const getOrdersToPrepareByDate = async (date = null) => {
 
 ```js
 const {data, ok} = await api.get("/meeting");
-setMeetings(response.data.filter((e) => !e.isDeleted));
+if (!ok) return;
+setMeetings(data.filter((e) => !e.isDeleted));
 ```
 
 #### ❓ Why to not do this
@@ -214,7 +215,8 @@ setMeetings(response.data.filter((e) => !e.isDeleted));
 
 ```js
 const {data, ok} = await api.post("/meeting/search",{deleted:false });
-setMeetings(response.data);
+if (!ok) return;
+setMeetings(data);
 
 ```
 
