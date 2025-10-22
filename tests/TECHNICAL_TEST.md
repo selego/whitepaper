@@ -314,7 +314,7 @@ Good luck! We're excited to see what you build. 🚀
 
 ---
 
-**Questions?** Email us at [your-email@selego.com]
+**Questions?** Email us at hiring@selego.co
 
 **Time starts when you clone this repository.**
 

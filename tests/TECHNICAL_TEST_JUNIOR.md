@@ -323,7 +323,7 @@ A: Basic validation is good (required fields, positive numbers), but don't spend
 
 - **Start simple** - get basic CRUD working first
 - **Test as you go** - don't wait until the end
-- **Ask for help** if you're stuck (email us!)
+- **Ask for help** if you're stuck (email us at hiring@selego.co!)
 - **Focus on working code** over perfect code
 - **Document your decisions** in the README
 
@@ -331,6 +331,6 @@ Good luck! We're excited to see what you build. 🚀
 
 ---
 
-**Questions?** Email us at [your-email@selego.com]
+**Questions?** Email us at hiring@selego.co
 
 **Time starts when you clone this repository.**
