@@ -234,7 +234,7 @@ We will evaluate your submission based on:
 Your README should include:
 
 - How to set it up and run it
-- Any API keys we need (use .env.example)
+- Any API keys we need (please send the .env with the keys when you send it to us)
 - Decisions you made and why
 - Time you spent
 - What you'd do differently with more time
