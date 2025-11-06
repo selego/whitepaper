@@ -243,7 +243,7 @@ Your README should include:
 
 - We should be able to `npm install` and run your code
 - Document any environment variables needed
-- If it requires API keys, provide test keys or instructions
+- If it requires API keys, provide the .env file
 
 ### What We're Looking For
 
@@ -255,7 +255,6 @@ Your README should include:
 - Inconsistent patterns and naming across the codebase
 - No error handling for external services (email/AI)
 - Code that doesn't run or missing core features
-- Hard-coded API keys (security issue!)
 - Over-engineered AI features that don't add real value
 
 **Green Flags ✅:**
